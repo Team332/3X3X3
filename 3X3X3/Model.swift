@@ -36,4 +36,4 @@ class User {
     var totalWords: Int
     var wrongAnswerList: [String: String]
 }
-cgcol
+
