@@ -13,7 +13,7 @@ class TotalVocabularyList {
     
     private init() {}
     
-    var list: [VocabularyList]
+    var list: [VocabularyList]?
 }
 
 // 단어장
@@ -29,11 +29,11 @@ class User {
     
     private init() {}
     
-    var userName: String
-    var userLevel: Int
-    var userEXP: Int
-    var averageScore: Double
-    var totalWords: Int
-    var wrongAnswerList: [String: String]
+    var userName: String?
+    var userLevel: Int?
+    var userEXP: Int?
+    var averageScore: Double?
+    var totalWords: Int?
+    var wrongAnswerList: [String: String]?
 }
 
