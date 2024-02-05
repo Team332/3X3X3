@@ -8,8 +8,6 @@
 import UIKit
 
 class TabBarController: UITabBarController {
-    
-    var vocaTab: UINavigationController {}
 
     override func viewDidLoad() {
         super.viewDidLoad()
