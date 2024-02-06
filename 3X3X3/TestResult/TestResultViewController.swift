@@ -79,7 +79,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
     // 메세지
     private let messageLabel: UILabel = {
         let label = UILabel()
-        label.text = "이렇게 쉬운 걸 다 풀 줄 알았는데,\n 실망이야~"
+        label.text = "이렇게 쉬운 걸 다 맞을 줄 알았는데,\n 실망이야~"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         return label
@@ -101,11 +101,36 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         return collectionView
     }()
 
+    private let backBtn: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("돌아가기", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.systemGray.cgColor
+        button.layer.cornerRadius = 20
+        return button
+    }()
+
+    private let studyBtn: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("더 공부하기", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.systemGray.cgColor
+        button.layer.cornerRadius = 20
+        return button
+    }()
+
+
     // MARK: - setupUI
 
     private func setupUI() {
         view.addSubview(messageLabel)
         view.addSubview(roundedView)
+        view.addSubview(backBtn)
+        view.addSubview(studyBtn)
         roundedView.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -129,6 +154,21 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         collectionView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(20)
             make.leading.trailing.equalToSuperview().inset(10)
+        }
+
+        backBtn.snp.makeConstraints { make in
+            make.top.equalTo(roundedView.snp.bottom).offset(60)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalTo(studyBtn.snp.leading).offset(-30)
+        }
+
+        studyBtn.snp.makeConstraints { make in
+            make.top.equalTo(backBtn.snp.top)
+            //make.top.equalTo(roundedView.snp.bottom).offset(30)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.trailing.equalToSuperview().offset(-20)
+            make.width.equalTo(backBtn.snp.width)
         }
     }
 
