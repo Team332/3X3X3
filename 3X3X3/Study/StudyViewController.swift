@@ -7,14 +7,16 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
 
 #Preview{
     StudyViewController()
 }
 
-
 class StudyViewController: UIViewController {
+    
+    var label2 = UILabel()
+    var isLabel2Clicked = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +43,7 @@ class StudyViewController: UIViewController {
         label1.lineBreakMode = .byTruncatingTail
         
         // 단어 뒷면 라벨
-        let label2 = UILabel()
-        label2.text = "한글 뜻"
+        label2.text = " "
         label2.textAlignment = .center
         label2.font = UIFont.systemFont(ofSize: 24)
         label2.numberOfLines = 4
@@ -93,7 +94,7 @@ class StudyViewController: UIViewController {
         }
         
         noteImageView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(80)
+            make.top.equalTo(titleLabel.snp.bottom).offset(60)
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
             make.height.equalTo(320)
@@ -113,7 +114,7 @@ class StudyViewController: UIViewController {
         }
         
         buttonStackView.snp.makeConstraints { make in
-            make.top.equalTo(noteImageView.snp.bottom).offset(20)
+            make.top.equalTo(noteImageView.snp.bottom).offset(40)
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
             make.height.equalTo(40)
@@ -123,6 +124,21 @@ class StudyViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-60)
             make.right.equalToSuperview().offset(-15)
             make.height.equalTo(100)
+        }
+        
+        // label2 클릭 이벤트 핸들러 추가
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(label2Tapped))
+        label2.isUserInteractionEnabled = true // 사용자 상호작용 허용
+        label2.addGestureRecognizer(tapGesture)
+    }
+    
+    // label2 클릭 이벤트 처리
+    @objc func label2Tapped() {
+        if !isLabel2Clicked {
+            // 클릭된 상태로 변경하고 텍스트 업데이트
+            isLabel2Clicked = true
+            label2.text = "한글 뜻" // 여기에 실제 한글 뜻을 설정해주세요
+            print("label2가 클릭되었습니다.")
         }
     }
 }
