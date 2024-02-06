@@ -6,25 +6,36 @@
 //
 
 import UIKit
+import SnapKit
 
 class TestViewController: UIViewController {
 
+    let questionLabel: UILabel = {
+        let view = UILabel()
+        view.backgroundColor = .team332
+        view.frame = CGRect(x: 0.0, y: 0.0, width: 300, height: 300)
+        view.text = "문제"
+        view.font = .systemFont(ofSize: 30)
+        view.layer.masksToBounds = true
+        view.numberOfLines = 0
+        view.layer.cornerRadius = 20
+        view.textAlignment = .center
+//        view.snp.makeConstraints{make in
+//            make.centerX.equalToSuperview()
+//            make.top.equalToSuperview().offset(50)
+//        }
+        return view
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .blue
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .white
+        addViews()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func addViews() {
+        view.addSubview(questionLabel)
     }
-    */
-
 }
