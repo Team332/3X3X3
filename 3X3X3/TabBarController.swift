@@ -32,7 +32,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     
     var testResultVC: TestResultViewController {
         let testResultTab = TestResultViewController()
-        let testResultTabItem = UITabBarItem(title: "TestResult", image: UIImage(named: "ResultIcon")?.resized(to: CGSize(width: 20.0, height: 20.0)), tag: 3)
+        let testResultTabItem = UITabBarItem(title: "TestResult", image: UIImage(named: "TestResultIcon")?.resized(to: CGSize(width: 20.0, height: 20.0)), tag: 3)
         testResultTab.tabBarItem = testResultTabItem
         return testResultTab
     }
@@ -53,7 +53,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBar.backgroundColor = .white
+        self.tabBar.backgroundColor = .team332
         self.viewControllers = [vocaVC, studyVC, testVC, testResultVC, profileVC]
     }
     /*
@@ -83,3 +83,4 @@ extension UIImage {
         }
     }
 }
+
