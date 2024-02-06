@@ -18,7 +18,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         view.backgroundColor = .white
         createCircle()
         setupUI()
-        setupConstraints()
+        setupConstraint()
     }
 
     // MARK: - Circle
@@ -138,7 +138,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
 
     // MARK: - setupConstraints
 
-    private func setupConstraints() {
+    private func setupConstraint() {
         messageLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(270)
             make.leading.trailing.equalToSuperview().inset(20)
@@ -157,16 +157,15 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         }
 
         backBtn.snp.makeConstraints { make in
-            make.top.equalTo(roundedView.snp.bottom).offset(60)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(roundedView.snp.bottom).offset(40)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalTo(studyBtn.snp.leading).offset(-30)
         }
 
         studyBtn.snp.makeConstraints { make in
             make.top.equalTo(backBtn.snp.top)
-            //make.top.equalTo(roundedView.snp.bottom).offset(30)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(backBtn.snp.bottom)
             make.trailing.equalToSuperview().offset(-20)
             make.width.equalTo(backBtn.snp.width)
         }
