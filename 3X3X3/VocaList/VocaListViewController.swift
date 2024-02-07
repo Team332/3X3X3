@@ -102,7 +102,11 @@ class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
                 let addCategory = VocabularyList(name: category, word: [], isCompleted: false)
                 self.vocaCategories.append(addCategory)
                 self.vocaCollectionView.reloadData()
+                
+                TotalVocabularyList.shared.list = self.vocaCategories
             }
+            
+            print(TotalVocabularyList.shared.list ?? [])
         }))
         
         self.present(alert, animated: true, completion: nil)
@@ -133,8 +137,7 @@ extension VocaListViewController: UICollectionViewDataSource {
     // MARK: - 왜 안 돼
     func didTapStudyButton() {
         let goStudyView = StudyViewController()
-        
-        navigationController?.pushViewController(goStudyView, animated: true)
+        present(goStudyView, animated: true, completion: nil)
     }
     
     func didTapAddVocaButton() {

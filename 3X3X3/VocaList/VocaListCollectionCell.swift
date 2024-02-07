@@ -21,7 +21,7 @@ class VocaListCollectionCell: UICollectionViewCell {
     var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 22, weight: .heavy)
+        label.font = .systemFont(ofSize: 24, weight: .heavy)
         
         return label
     }()
