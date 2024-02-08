@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-#Preview{
-    StudyViewController()
-}
+//#Preview{
+//    StudyViewController()
+//}
 
 class StudyViewController: UIViewController {
     

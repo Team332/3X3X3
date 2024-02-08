@@ -8,7 +8,9 @@
 import UIKit
 import SnapKit
 import CoreData
-
+var persistentContainer: NSPersistentContainer? {
+    (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+}
 class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
@@ -16,8 +18,6 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .white
         setUi()
         
-        //더미더미
-        User.shared.totalWords = 3324
         updateExperience()
         let calendarVC = CalendarViewController(collectionViewLayout: UICollectionViewFlowLayout())
         addChild(calendarVC)
@@ -32,19 +32,35 @@ class ProfileViewController: UIViewController {
     }
     
     func updateExperience() {
-        if let totalWords = User.shared.totalWords {
-            let expPercentage = min(Double(totalWords % 100) / 100.0, 1.0)
-            expBar.setProgress(Float(expPercentage), animated: true)
-            
-            totalWordsLabel.text = "\(totalWords) 개"
-            
-            let level = totalWords / 100
-            rankLabel.text = "\(level) 등급"
-            
-            let percentage = Int(expPercentage * 100)
-            expPercentLabel.text = "\(percentage) / 100"
-            expLabelText.text = "\(percentage)%"
-        }
+        guard let context = persistentContainer?.viewContext else {return}
+        
+        let totalWords = User(context: context)
+        
+        totalWords.totalWords = 332
+        
+        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+            do {
+                let users = try context.fetch(fetchRequest)
+                if let user = users.first {
+                    let totalWords = user.totalWords
+                    
+                    let expPercentage = min(Double(totalWords % 100) / 100.0, 1.0)
+                    expBar.setProgress(Float(expPercentage), animated: true)
+                    
+                    totalWordsLabel.text = "\(totalWords) 개"
+                    
+                    let level = totalWords / 100
+                    rankLabel.text = "\(level) 등급"
+                    
+                    let percentage = Int(expPercentage * 100)
+                    expPercentLabel.text = "\(percentage) / 100"
+                    expLabelText.text = "\(percentage)%"
+                } else {
+                    print("없어요")
+                }
+            } catch {
+                print("Failed to fetch user data: \(error)")
+            }
     }
     
     let samsamImage: UIImageView = {
