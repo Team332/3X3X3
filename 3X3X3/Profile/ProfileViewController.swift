@@ -8,9 +8,11 @@
 import UIKit
 import SnapKit
 import CoreData
+
 var persistentContainer: NSPersistentContainer? {
     (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
 }
+
 class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
@@ -27,40 +29,28 @@ class ProfileViewController: UIViewController {
             make.top.equalTo(expStack.snp.bottom).offset(5)
             make.leading.equalTo(15)
             make.trailing.equalTo(-15)
-            make.bottom.equalTo(-90)
+            make.bottom.equalTo(self.view.snp.bottom).offset(-90)
         }
     }
     
     func updateExperience() {
         guard let context = persistentContainer?.viewContext else {return}
         
-        let totalWords = User(context: context)
+        let total = User(context: context)
         
-        totalWords.totalWords = 332
+        total.totalWords = 332
         
-        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
-            do {
-                let users = try context.fetch(fetchRequest)
-                if let user = users.first {
-                    let totalWords = user.totalWords
-                    
-                    let expPercentage = min(Double(totalWords % 100) / 100.0, 1.0)
-                    expBar.setProgress(Float(expPercentage), animated: true)
-                    
-                    totalWordsLabel.text = "\(totalWords) 개"
-                    
-                    let level = totalWords / 100
-                    rankLabel.text = "\(level) 등급"
-                    
-                    let percentage = Int(expPercentage * 100)
-                    expPercentLabel.text = "\(percentage) / 100"
-                    expLabelText.text = "\(percentage)%"
-                } else {
-                    print("없어요")
-                }
-            } catch {
-                print("Failed to fetch user data: \(error)")
-            }
+        let expPercentage = min(Double(total.totalWords % 100) / 100.0, 1.0)
+        expBar.setProgress(Float(expPercentage), animated: true)
+        
+        totalWordsLabel.text = "\(total.totalWords) 개"
+        
+        let level = total.totalWords / 100
+        rankLabel.text = "\(level) 등급"
+        
+        let percentage = Int(expPercentage * 100)
+        expPercentLabel.text = "\(percentage) / 100"
+        expLabelText.text = "\(percentage)%"
     }
     
     let samsamImage: UIImageView = {
@@ -74,7 +64,7 @@ class ProfileViewController: UIViewController {
     
     let totalWordsLabel: UILabel = {
         let totalWordsLabel = UILabel()
-        totalWordsLabel.text = "9999"
+//        totalWordsLabel.text = "9999"
         totalWordsLabel.font = UIFont.systemFont(ofSize: 17)
         return totalWordsLabel
     }()
@@ -88,14 +78,14 @@ class ProfileViewController: UIViewController {
     
     let rankLabel: UILabel = {
         let rankLabel = UILabel()
-        rankLabel.text = "99"
+//        rankLabel.text = "99"
         rankLabel.font = UIFont.systemFont(ofSize: 17)
         return rankLabel
     }()
     
     let expLabelText: UILabel = {
         let expLabelText = UILabel()
-        expLabelText.text = "88"
+//        expLabelText.text = "88"
         expLabelText.font = UIFont.systemFont(ofSize: 17)
         return expLabelText
     }()
