@@ -40,6 +40,8 @@
 		14DE56FB2B70D74A00A2C6D9 /* VocaListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocaListViewController.swift; sourceTree = "<group>"; };
 		237794EBA1117AF2F0C073C7 /* Pods-3X3X3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-3X3X3.debug.xcconfig"; path = "Target Support Files/Pods-3X3X3/Pods-3X3X3.debug.xcconfig"; sourceTree = "<group>"; };
 		270D1D172B712B1C0077D5A2 /* FinishedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
+		270D1D322B74B6860077D5A2 /* Pods_3X3X3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_3X3X3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		270D1D332B74B6860077D5A2 /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AE66769F2F731E571CA6EEE /* Pods_3X3X3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_3X3X3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6400E6C7FCCA6C2E78CD224 /* Pods-3X3X3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-3X3X3.release.xcconfig"; path = "Target Support Files/Pods-3X3X3/Pods-3X3X3.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,10 +146,21 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		270D1D342B74B6860077D5A2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				270D1D322B74B6860077D5A2 /* Pods_3X3X3.framework */,
+				270D1D332B74B6860077D5A2 /* SnapKit.framework */,
+			);
+			name = Products;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		AECF579DB2A028D5CE185AB0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				6AE66769F2F731E571CA6EEE /* Pods_3X3X3.framework */,
+				270D1D342B74B6860077D5A2 /* Products */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
