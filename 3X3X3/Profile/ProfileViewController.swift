@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import CoreData
 
 class ProfileViewController: UIViewController {
     
@@ -147,7 +148,7 @@ class ProfileViewController: UIViewController {
         scoreLabelStack.layoutMargins = UIEdgeInsets(top: 20, left: 10, bottom: 20, right: 40)
         scoreLabelStack.isLayoutMarginsRelativeArrangement = true
         scoreLabelStack.layer.masksToBounds = true
-        scoreLabelStack.backgroundColor = .team332
+        scoreLabelStack.backgroundColor = UIColor.team332.withAlphaComponent(0.8)
         return scoreLabelStack
     }()
     

@@ -18,7 +18,7 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.backgroundColor = .team332
+        collectionView.backgroundColor = UIColor.team332.withAlphaComponent(0.5)
         collectionView.register(CalendarCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.layer.cornerRadius = 15
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
@@ -38,7 +38,7 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
             cell.backgroundColor = .check
             cell.textLabel.text = "✔️"
         } else {
-            cell.backgroundColor = .team332Color1
+            cell.backgroundColor = .team332
         }
         
         return cell
