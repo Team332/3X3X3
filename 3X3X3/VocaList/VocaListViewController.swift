@@ -136,8 +136,12 @@ extension VocaListViewController: UICollectionViewDataSource {
     
     // MARK: - 왜 안 돼
     func didTapStudyButton() {
+//        let goStudyView = StudyViewController()
+//        let navigationController = UINavigationController(rootViewController: self)
+//        navigationController.pushViewController(goStudyView, animated: true)
+//        present(navigationController, animated: true, completion: nil)
         let goStudyView = StudyViewController()
-        present(goStudyView, animated: true, completion: nil)
+        self.navigationController?.pushViewController(goStudyView, animated: true)
     }
     
     func didTapAddVocaButton() {

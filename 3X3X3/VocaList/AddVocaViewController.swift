@@ -67,6 +67,7 @@ class AddVocaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
         
         setUI()
     }
@@ -118,7 +119,7 @@ class AddVocaViewController: UIViewController {
         let newWord = Word(word: wordText, meaning: meaningText, isCorrect: false)
         
         // Create a new VocabularyList instance
-        let newVocabularyList = VocabularyList(name: "Business", word: [newWord], isCompleted: false)
+        let newVocabularyList = VocabularyList(name: "", word: [newWord], isCompleted: false)
         
         // Add the new VocabularyList to the totalVocabularyList
         totalVocabularyList.append(newVocabularyList)
@@ -134,5 +135,17 @@ class AddVocaViewController: UIViewController {
         (vocaStack.arrangedSubviews[1] as? UITextField)?.text = ""
         (vocaStack.arrangedSubviews[0] as? UITextField)?.resignFirstResponder()
         (vocaStack.arrangedSubviews[1] as? UITextField)?.resignFirstResponder()
+    }
+}
+
+extension AddVocaViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyBoard() {
+        view.endEditing(true)
     }
 }
