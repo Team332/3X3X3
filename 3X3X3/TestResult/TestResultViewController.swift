@@ -7,23 +7,132 @@
 
 import UIKit
 import SnapKit
+import CoreData
 
 class TestResultViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    var incorrectWords: [String] = ["Word1", "Word2", "Word3", "Word4", "Word5", "Word6"]
+// MARK: - Properties
+
+    var persistentContainer: NSPersistentContainer? {
+        (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    }
+
+    var totalQuestion: Int = 0
+    var correctRate: CGFloat = 0.0
+    var incorrectWords: [NSManagedObject] = []
+
+// MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .white
+
+        setupData()
         createCircle()
         setupUI()
         setupConstraint()
     }
 
-    // MARK: - Circle
+// MARK: - Data Setup
+
+    private func setupData() {
+        dummyData()
+        setupIncorrectWord()
+        calculateCorrectRate()
+    }
+
+    // 더미 데이터
+    private func dummyData() {
+        guard let context = persistentContainer?.viewContext else {
+            return
+        }
+
+        let entity = NSEntityDescription.entity(forEntityName: "Word", in: context)!
+
+        let wordList: [NSManagedObject] = [
+            createWord(entity: entity, word: "Apple", meaning: "사과", isCorrect: true, context: context),
+            createWord(entity: entity, word: "Banana", meaning: "바나나", isCorrect: false, context: context),
+            createWord(entity: entity, word: "Carrot", meaning: "당근", isCorrect: true, context: context),
+        ]
+
+//            TotalVocabularyList.shared.list = [VocabularyList(name: "샘플 단어장 1", word: wordList, isCompleted: false)]
+//
+//            saveContext(context)
+    }
+
+    private func createWord(entity: NSEntityDescription, word: String, meaning: String, isCorrect: Bool, context: NSManagedObjectContext) -> NSManagedObject {
+        let wordObject = NSManagedObject(entity: entity, insertInto: context)
+        wordObject.setValue(word, forKey: "word")
+        wordObject.setValue(meaning, forKey: "meaning")
+        wordObject.setValue(isCorrect, forKey: "isCorrect")
+
+        return wordObject
+    }
+
+//    // 틀린 단어 필터링(collectionView)
+//    private func setupIncorrectWord() {
+//        if let wordList = TotalVocabularyList.shared.list?.flatMap({ $0.word }) {
+//            incorrectWord = wordList.filter { !$0.isCorrect }
+//        }
+//    }
+
+    // 틀린 단어 필터링(collectionView)
+    private func setupIncorrectWord() {
+        guard let context = persistentContainer?.viewContext else {
+            return
+        }
+
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
+        fetchRequest.predicate = NSPredicate(format: "isCorrect == %@", NSNumber(value: false))
+
+        do {
+            if let result = try context.fetch(fetchRequest) as? [NSManagedObject] {
+                incorrectWords = result
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+    }
+
+    // 정답률 계산
+//    private func calculateCorrectRate() {
+//        // 총 문제 수 계산
+//        if let vocabularyList = TotalVocabularyList.shared.list?.first {
+//            totalQuestion = vocabularyList.word.count
+//        }
+//
+//        // 틀린 단어 세기
+//        let incorrectWordCount = TotalVocabularyList.shared.list?.flatMap { $0.word }.filter { !$0.isCorrect }.count ?? 0
+//
+//        correctRate = CGFloat(totalQuestion - incorrectWordCount) / CGFloat(totalQuestion)
+//    }
+
+    // 정답률 계산
+    private func calculateCorrectRate() {
+        guard let context = persistentContainer?.viewContext else {
+            return
+        }
+
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
+
+        do {
+            if let result = try context.fetch(fetchRequest) as? [NSManagedObject] {
+                totalQuestion = result.count
+
+                let incorrectWordCount = result.filter { !($0.value(forKey: "isCorrect") as? Bool ?? true) }.count
+                let correctWordCount = totalQuestion - incorrectWordCount
+
+                correctRate = CGFloat(correctWordCount) / CGFloat(totalQuestion)
+            }
+        } catch let error as NSError {
+            print("불러올 수 없습니다. \(error), \(error.userInfo)")
+        }
+    }
+
+
+// MARK: - Circle
+
     func createCircle() {
-        let correctRate: CGFloat = 0.7
         let circleRadius: CGFloat = 75
         let circleLineWidth: CGFloat = 15.0
 
@@ -46,7 +155,6 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         // 정답률 테두리
         let borderLine = CAShapeLayer()
         borderLine.path = circularPath.cgPath
-        //borderLine.strokeColor = UIColor.blue.cgColor
         borderLine.strokeColor = UIColor(red: 0xDB/255.0, green: 0xC5/255.0, blue: 0xFF/255.0, alpha: 1.0).cgColor
         borderLine.lineWidth = circleLineWidth
         borderLine.fillColor = UIColor.clear.cgColor
@@ -62,8 +170,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         containerView.addSubview(correctLabel)
 
         correctLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.centerX.centerY.equalToSuperview()
         }
 
         // 테두리 animate
@@ -74,18 +181,17 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         borderLine.add(animation, forKey: "progressAnimation")
     }
 
-    // MARK: - View
 
-    // 메세지
+// MARK: - UI Setup
+
     private let messageLabel: UILabel = {
         let label = UILabel()
-        label.text = "이렇게 쉬운 걸 다 맞을 줄 알았는데,\n 실망이야~"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         return label
     }()
 
-    private let roundedView: UIView = {
+    private let coverView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0xDB/255.0, green: 0xC5/255.0, blue: 0xFF/255.0, alpha: 1.0)
         view.layer.cornerRadius = 20
@@ -106,9 +212,10 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         button.setTitle("돌아가기", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         button.setTitleColor(UIColor.black, for: .normal)
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.systemGray.cgColor
+        button.layer.borderWidth = 3
+        button.layer.borderColor = UIColor(red: 0xAA/255.0, green: 0xD5/255.0, blue: 0xF4/255.0, alpha: 1.0).cgColor
         button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(backBtnTap), for: .touchUpInside)
         return button
     }()
 
@@ -117,26 +224,40 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         button.setTitle("더 공부하기", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         button.setTitleColor(UIColor.black, for: .normal)
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.systemGray.cgColor
+        button.layer.borderWidth = 3
+        button.layer.borderColor = UIColor(red: 0xFE/255.0, green: 0xAC/255.0, blue: 0xAC/255.0, alpha: 1.0).cgColor
         button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(studyBtnTap), for: .touchUpInside)
         return button
     }()
 
-
-    // MARK: - setupUI
+    // 정답률에 따른 메시지
+    private var resultMessage: String {
+        if correctRate >= 0.1 && correctRate < 0.4 {
+            return "한 발짝 더 나가봐요! 걱정 마세요,\n 실력은 오늘도 업그레이드 중이에요."
+        } else if correctRate >= 0.4 && correctRate < 0.7 {
+            return "와, 대단해요! 여기서 뭐하는 사람이에요? \n 미래의 퀴즈 마스터?"
+        } else if correctRate >= 0.7 && correctRate < 0.9 {
+            return "이렇게 쉬운 걸 다 맞을 줄 알았는데,\n 실망이야~"
+        } else if correctRate >= 0.9 && correctRate < 1 {
+            return "와우, 대단해요! 정말 신기해요.\n 세상에 나와서 퀴즈 대회를 개최하면 안 될까요?"
+        } else {
+            return "정말 대단해, 우주 최고의 퀴즈 고수! \n 이제 뭐든 할 수 있을 거예요."
+        }
+    }
 
     private func setupUI() {
         view.addSubview(messageLabel)
-        view.addSubview(roundedView)
+        view.addSubview(coverView)
         view.addSubview(backBtn)
         view.addSubview(studyBtn)
-        roundedView.addSubview(collectionView)
+        coverView.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
+        messageLabel.text = resultMessage
     }
 
-    // MARK: - setupConstraints
+// MARK: - Constraint
 
     private func setupConstraint() {
         messageLabel.snp.makeConstraints { make in
@@ -145,7 +266,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         }
         messageLabel.numberOfLines = 0
 
-        roundedView.snp.makeConstraints { make in
+        coverView.snp.makeConstraints { make in
             make.top.equalTo(messageLabel.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(200)
@@ -157,7 +278,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         }
 
         backBtn.snp.makeConstraints { make in
-            make.top.equalTo(roundedView.snp.bottom).offset(40)
+            make.top.equalTo(coverView.snp.bottom).offset(40)
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalTo(studyBtn.snp.leading).offset(-30)
@@ -172,7 +293,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
 
-    // MARK: CollectionView
+// MARK: CollectionView DataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return incorrectWords.count
@@ -185,10 +306,17 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
 
         // 틀린 단어 표시
         let wordLabel = UILabel()
-        wordLabel.text = incorrectWords[indexPath.item]
         wordLabel.textAlignment = .center
-        wordLabel.font = UIFont.systemFont(ofSize: 16)
+        wordLabel.font = UIFont.systemFont(ofSize: 18)
         cell.contentView.addSubview(wordLabel)
+
+//        let word = incorrectWord[indexPath.item].word
+//        let meaning = incorrectWord[indexPath.item].meaning
+        let word = incorrectWords[indexPath.item].value(forKey: "word") as? String ?? ""
+        let meaning = incorrectWords[indexPath.item].value(forKey: "meaning") as? String ?? ""
+
+
+        wordLabel.text = "\(word)       \(meaning)"
 
         wordLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -197,9 +325,23 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         return cell
     }
 
-    // 셀 크기
+// MARK: - CollectionView Layout
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width - 20, height: 60)
+        return CGSize(width: collectionView.bounds.width - 20, height: 80)
+    }
+
+// MARK: - Button Action
+
+    @objc private func backBtnTap() {
+        //navigationController?.popViewController(animated: true)
+        let vocaListViewController = VocaListViewController()
+        navigationController?.pushViewController(vocaListViewController, animated: true)
+    }
+
+    @objc private func studyBtnTap() {
+        let studyViewController = StudyViewController()
+        navigationController?.pushViewController(studyViewController, animated: true)
     }
 }
 
