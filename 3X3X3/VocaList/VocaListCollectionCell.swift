@@ -100,3 +100,4 @@ class VocaListCollectionCell: UICollectionViewCell {
         delegate?.didTapAddVocaButton()
     }
 }
+
