@@ -55,6 +55,14 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewWillAppear(animated)
         self.tabBar.backgroundColor = .team332
         self.viewControllers = [vocaVC, studyVC, testVC, testResultVC, profileVC]
+        if #available(iOS 15.0, *) {
+           let appearance = UITabBarAppearance()
+           appearance.configureWithOpaqueBackground()
+           appearance.backgroundColor = .team332
+           
+            self.tabBar.standardAppearance = appearance
+            self.tabBar.scrollEdgeAppearance = .none
+        }
     }
     /*
     // MARK: - Navigation

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0009A9D42B725FB8007C85B7 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0009A9D32B725FB8007C85B7 /* CalendarViewController.swift */; };
 		14DE56D32B70B2EF00A2C6D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56D22B70B2EF00A2C6D9 /* AppDelegate.swift */; };
 		14DE56D52B70B2EF00A2C6D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56D42B70B2EF00A2C6D9 /* SceneDelegate.swift */; };
 		14DE56DD2B70B2EF00A2C6D9 /* _X3X3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56DB2B70B2EF00A2C6D9 /* _X3X3.xcdatamodeld */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0009A9D32B725FB8007C85B7 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		14DE56CF2B70B2EF00A2C6D9 /* 3X3X3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 3X3X3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14DE56D22B70B2EF00A2C6D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14DE56D42B70B2EF00A2C6D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				14DE56F92B70D73D00A2C6D9 /* ProfileViewController.swift */,
+				0009A9D32B725FB8007C85B7 /* CalendarViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				14DE56F22B70B94F00A2C6D9 /* Model.swift in Sources */,
 				14DE56D32B70B2EF00A2C6D9 /* AppDelegate.swift in Sources */,
 				14DE56F82B70D73300A2C6D9 /* TestViewController.swift in Sources */,
+				0009A9D42B725FB8007C85B7 /* CalendarViewController.swift in Sources */,
 				14DE56EF2B70B7B000A2C6D9 /* TabBarController.swift in Sources */,
 				270D1D182B712B1C0077D5A2 /* FinishedViewController.swift in Sources */,
 				14DE56F62B70D72A00A2C6D9 /* TestResultViewController.swift in Sources */,
@@ -428,6 +432,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -456,6 +461,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

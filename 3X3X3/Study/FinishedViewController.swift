@@ -13,6 +13,7 @@ import SnapKit
 }
 
 
+
 class FinishedViewController: UIViewController {
 
     // 시험 준비 완료 버튼이 클릭되었을 때 실행되는 함수
