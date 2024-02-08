@@ -8,9 +8,10 @@
 import UIKit
 import SnapKit
 
-//#Preview{
-//    FinishedViewController()
-//}
+#Preview{
+    FinishedViewController()
+}
+
 
 
 class FinishedViewController: UIViewController {
