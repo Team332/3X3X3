@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0009A9D42B725FB8007C85B7 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0009A9D32B725FB8007C85B7 /* CalendarViewController.swift */; };
 		14DE56D32B70B2EF00A2C6D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56D22B70B2EF00A2C6D9 /* AppDelegate.swift */; };
 		14DE56D52B70B2EF00A2C6D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56D42B70B2EF00A2C6D9 /* SceneDelegate.swift */; };
 		14DE56DD2B70B2EF00A2C6D9 /* _X3X3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56DB2B70B2EF00A2C6D9 /* _X3X3.xcdatamodeld */; };
@@ -22,6 +21,7 @@
 		14DE56FC2B70D74A00A2C6D9 /* VocaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56FB2B70D74A00A2C6D9 /* VocaListViewController.swift */; };
 		733C783A2B7300AA00362FB4 /* VocaListCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733C78392B7300AA00362FB4 /* VocaListCollectionCell.swift */; };
 		733C783C2B73192200362FB4 /* AddVocaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733C783B2B73192200362FB4 /* AddVocaViewController.swift */; };
+		7353FE932B7865270038EFA3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7353FE922B7865270038EFA3 /* CoreDataManager.swift */; };
 		F802655BC59AA51074A31A49 /* Pods_3X3X3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AE66769F2F731E571CA6EEE /* Pods_3X3X3.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +46,7 @@
 		6AE66769F2F731E571CA6EEE /* Pods_3X3X3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_3X3X3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		733C78392B7300AA00362FB4 /* VocaListCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocaListCollectionCell.swift; sourceTree = "<group>"; };
 		733C783B2B73192200362FB4 /* AddVocaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVocaViewController.swift; sourceTree = "<group>"; };
+		7353FE922B7865270038EFA3 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		E6400E6C7FCCA6C2E78CD224 /* Pods-3X3X3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-3X3X3.release.xcconfig"; path = "Target Support Files/Pods-3X3X3/Pods-3X3X3.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +106,7 @@
 				14DE56FB2B70D74A00A2C6D9 /* VocaListViewController.swift */,
 				733C78392B7300AA00362FB4 /* VocaListCollectionCell.swift */,
 				733C783B2B73192200362FB4 /* AddVocaViewController.swift */,
+				7353FE922B7865270038EFA3 /* CoreDataManager.swift */,
 			);
 			path = VocaList;
 			sourceTree = "<group>";
@@ -281,6 +283,7 @@
 				14DE56EF2B70B7B000A2C6D9 /* TabBarController.swift in Sources */,
 				733C783A2B7300AA00362FB4 /* VocaListCollectionCell.swift in Sources */,
 				14DE56F62B70D72A00A2C6D9 /* TestResultViewController.swift in Sources */,
+				7353FE932B7865270038EFA3 /* CoreDataManager.swift in Sources */,
 				14DE56FC2B70D74A00A2C6D9 /* VocaListViewController.swift in Sources */,
 				14DE56D52B70B2EF00A2C6D9 /* SceneDelegate.swift in Sources */,
 				14DE56FA2B70D73D00A2C6D9 /* ProfileViewController.swift in Sources */,

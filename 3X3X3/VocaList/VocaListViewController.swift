@@ -7,10 +7,19 @@
 
 import UIKit
 import SnapKit
+import CoreData
+
+// 싱글톤 패턴 사용해서 데이터 전달하기 위함
+class SharedData {
+    static let shared = SharedData()
+    
+    var enteredCategory: String?
+}
 
 class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
     
-    var vocaCategories: [VocabularyList] = TotalVocabularyList.shared.list ?? []
+    // 코어데이터에서 불러온 데이터 저장하는 배열
+    var categoryDataSource: [NSManagedObject] = []
     
     private var categoryStack: UIStackView = {
         let stackView = UIStackView()
@@ -34,7 +43,6 @@ class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
         return stackView
     }()
     
-    
     private var addCategoryButton: UIButton = {
         let button = UIButton()
         button.setTitle("+ 단어장 추가하기", for: .normal)
@@ -44,6 +52,7 @@ class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
         return button
     }()
     
+    // 단어장 목록
     private var vocaCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         
@@ -53,9 +62,12 @@ class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        categoryDataSource = CoreDataManager.shared.readVocaCategory()
+        
         vocaCollectionView.dataSource = self
         vocaCollectionView.delegate = self
         vocaCollectionView.register(VocaListCollectionCell.self, forCellWithReuseIdentifier: VocaListCollectionCell.identifier)
+        
         addCategoryButton.addTarget(self, action: #selector(tappedAddCategoryButton), for: .touchUpInside)
         
         setUI()
@@ -89,6 +101,7 @@ class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
         }
     }
     
+    // 단어장 추가(저장)하는 함수
     @objc func tappedAddCategoryButton() {
         let alert = UIAlertController(title: "단어장 추가", message: nil, preferredStyle: .alert)
         alert.addTextField { (tf) in
@@ -98,15 +111,17 @@ class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
         alert.addAction(UIAlertAction(title: "취소", style: .cancel))
         
         alert.addAction(UIAlertAction(title: "추가", style: .default, handler: { _ in
-            if let category = alert.textFields?[0].text, !category.isEmpty {
-                let addCategory = VocabularyList(name: category, word: [], isCompleted: false)
-                self.vocaCategories.append(addCategory)
-                self.vocaCollectionView.reloadData()
-                
-                TotalVocabularyList.shared.list = self.vocaCategories
-            }
+            guard let category = alert.textFields?.first?.text, !category.isEmpty
+            else { return }
             
-            print(TotalVocabularyList.shared.list ?? [])
+            SharedData.shared.enteredCategory = category
+
+            // 단어장 이름 저장
+            CoreDataManager.shared.createVocaCategory(name: category)
+            self.categoryDataSource = CoreDataManager.shared.readVocaCategory()
+            
+            self.vocaCollectionView.reloadData()
+            
         }))
         
         self.present(alert, animated: true, completion: nil)
@@ -117,7 +132,7 @@ class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
 extension VocaListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return vocaCategories.count
+        return categoryDataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -126,28 +141,31 @@ extension VocaListViewController: UICollectionViewDataSource {
         }
         
         cell.delegate = self
+        cell.indexPath = indexPath
         
         cell.backgroundColor = UIColor(named: "Team332Color")
-        cell.titleLabel.text = vocaCategories[indexPath.item].name
+        cell.titleLabel.text = categoryDataSource[indexPath.item].value(forKey: "name") as? String
         cell.layer.cornerRadius = 6
         
         return cell
     }
     
-    // MARK: - 왜 안 돼
     func didTapStudyButton() {
-//        let goStudyView = StudyViewController()
-//        let navigationController = UINavigationController(rootViewController: self)
-//        navigationController.pushViewController(goStudyView, animated: true)
-//        present(navigationController, animated: true, completion: nil)
         let goStudyView = StudyViewController()
-        self.navigationController?.pushViewController(goStudyView, animated: true)
+        navigationController?.pushViewController(goStudyView, animated: true)
     }
     
     func didTapAddVocaButton() {
         let goAddVocaView = AddVocaViewController()
         goAddVocaView.modalPresentationStyle = .automatic
         present(goAddVocaView, animated: true)
+    }
+    
+    func didTapDeleteButton(forCellAt indexPath: IndexPath) {
+        CoreDataManager.shared.deleteVoca(categoryDataSource[indexPath.item])
+        
+        self.categoryDataSource = CoreDataManager.shared.readVocaCategory()
+        self.vocaCollectionView.reloadData()
     }
     
 }
@@ -164,4 +182,5 @@ extension VocaListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 6
     }
+    
 }
