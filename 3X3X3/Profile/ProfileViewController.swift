@@ -9,18 +9,24 @@ import UIKit
 import SnapKit
 import CoreData
 
-var persistentContainer: NSPersistentContainer? {
-    (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-}
-
 class ProfileViewController: UIViewController {
+//    let testResultVC = TestResultViewController()
+    private lazy var totalQuestion: Int = 0
+    
+    var persistentContainer: NSPersistentContainer? {
+        (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    }
+    
+    private var correctRates: [CGFloat] {
+        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUi()
         
-        updateExperience()
+//        updateExperience()
         let calendarVC = CalendarViewController(collectionViewLayout: UICollectionViewFlowLayout())
         addChild(calendarVC)
         view.addSubview(calendarVC.view)
@@ -33,27 +39,45 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateExperience()
+    }
+    
     func updateExperience() {
         guard let context = persistentContainer?.viewContext else {return}
         
-        let total = User(context: context)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
+        do {
+            let wordsCount = try context.count(for: fetchRequest)
+            totalQuestion = wordsCount
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
         
-        total.totalWords = 332
+        lazy var total = User(context: context)
         
-        let expPercentage = min(Double(total.totalWords % 100) / 100.0, 1.0)
+//        total.totalWords = 332
+        
+        lazy var expPercentage = min(Double(totalQuestion % 100) / 100.0, 1.0)
         expBar.setProgress(Float(expPercentage), animated: true)
         
-        totalWordsLabel.text = "\(total.totalWords) 개"
+        totalWordsLabel.text = "\(totalQuestion) 개"
+        print(totalQuestion)
         
-        let level = total.totalWords / 100
+        lazy var level = totalQuestion / 100
         rankLabel.text = "\(level) 등급"
         
-        let percentage = Int(expPercentage * 100)
+        lazy var percentage = Int(expPercentage * 100)
         expPercentLabel.text = "\(percentage) / 100"
         expLabelText.text = "\(percentage)%"
+        
+        lazy var average = correctRates.isEmpty ? 0 : correctRates.reduce(0, +) / CGFloat(correctRates.count)
+        lazy var averageString = Int(average * 100)
+        averageScoreLabel.text = "\(averageString) 점"
     }
     
-    let samsamImage: UIImageView = {
+    private lazy var samsamImage: UIImageView = {
         let samsamImage = UIImageView()
         samsamImage.translatesAutoresizingMaskIntoConstraints = false
         samsamImage.contentMode = .scaleAspectFit
@@ -62,63 +86,59 @@ class ProfileViewController: UIViewController {
         return samsamImage
     }()
     
-    let totalWordsLabel: UILabel = {
+    private lazy var totalWordsLabel: UILabel = {
         let totalWordsLabel = UILabel()
-//        totalWordsLabel.text = "9999"
         totalWordsLabel.font = UIFont.systemFont(ofSize: 17)
         return totalWordsLabel
     }()
     
-    let averageScoreLabel: UILabel = {
+    private lazy var averageScoreLabel: UILabel = {
         let averageScoreLabel = UILabel()
-        averageScoreLabel.text = "9"
         averageScoreLabel.font = UIFont.systemFont(ofSize: 17)
         return averageScoreLabel
     }()
     
-    let rankLabel: UILabel = {
+    private lazy var rankLabel: UILabel = {
         let rankLabel = UILabel()
-//        rankLabel.text = "99"
         rankLabel.font = UIFont.systemFont(ofSize: 17)
         return rankLabel
     }()
     
-    let expLabelText: UILabel = {
+    private lazy var expLabelText: UILabel = {
         let expLabelText = UILabel()
-//        expLabelText.text = "88"
         expLabelText.font = UIFont.systemFont(ofSize: 17)
         return expLabelText
     }()
     
-    let totalLabel: UILabel = {
+    private lazy var totalLabel: UILabel = {
         let totalLabel = UILabel()
         totalLabel.text = "총단어수 :"
         totalLabel.font = UIFont.boldSystemFont(ofSize: 17)
         return totalLabel
     }()
     
-    let averageLabel: UILabel = {
+    private lazy var averageLabel: UILabel = {
         let averageLabel = UILabel()
         averageLabel.text = "평균점수 :"
         averageLabel.font = UIFont.boldSystemFont(ofSize: 17)
         return averageLabel
     }()
     
-    let tierLabel: UILabel = {
+    private lazy var tierLabel: UILabel = {
         let tierLabel = UILabel()
         tierLabel.text = "등       급 :"
         tierLabel.font = UIFont.boldSystemFont(ofSize: 17)
         return tierLabel
     }()
     
-    let expLabel: UILabel = {
+    private lazy var expLabel: UILabel = {
         let expLabel = UILabel()
         expLabel.text = "경  험  치 :"
         expLabel.font = UIFont.boldSystemFont(ofSize: 17)
         return expLabel
     }()
     
-    let expBar: UIProgressView = {
+    private lazy var expBar: UIProgressView = {
         let expBar = UIProgressView()
         expBar.trackTintColor = .clear
         expBar.progressTintColor = .exp
@@ -126,27 +146,27 @@ class ProfileViewController: UIViewController {
         return expBar
     }()
     
-    let expFullBar: UIProgressView = {
+    private lazy var expFullBar: UIProgressView = {
         let expFullBar = UIProgressView()
         expFullBar.trackTintColor = .black
         return expFullBar
     }()
     
-    let expPercentLabel: UILabel = {
+    private lazy var expPercentLabel: UILabel = {
         let expPercentLabel = UILabel()
         expPercentLabel.textAlignment = .right
         expPercentLabel.font = UIFont.systemFont(ofSize: 12)
         return expPercentLabel
     }()
     
-    let expStack: UIStackView = {
+    private lazy var expStack: UIStackView = {
         let expStack = UIStackView()
         expStack.axis = .vertical
         expStack.spacing = 3
         return expStack
     }()
     
-    let scoreLabelStack: UIStackView = {
+    private lazy var scoreLabelStack: UIStackView = {
         let scoreLabelStack = UIStackView()
         scoreLabelStack.axis = .horizontal
         scoreLabelStack.spacing = 10
@@ -158,14 +178,14 @@ class ProfileViewController: UIViewController {
         return scoreLabelStack
     }()
     
-    let labelStack: UIStackView = {
+    private lazy var labelStack: UIStackView = {
         let labelStack = UIStackView()
         labelStack.axis = .vertical
         labelStack.spacing = 30
         return labelStack
     }()
     
-    let scoreStack: UIStackView = {
+    private lazy var scoreStack: UIStackView = {
         let scoreStack = UIStackView()
         scoreStack.axis = .vertical
         scoreStack.spacing = 30

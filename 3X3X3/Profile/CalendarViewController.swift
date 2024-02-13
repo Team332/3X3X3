@@ -11,9 +11,9 @@ import UIKit
 class CalendarViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     private let reuseIdentifier = "Cell"
-    
-    // 더미더미
-    private let studyDates: Set<Int> = [2, 5, 7, 10, 15, 20, 25, 28]
+    var correctRates: [CGFloat] {
+        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +34,9 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         
         cell.textLabel.text = "\(indexPath.item + 1)"
         
-        if studyDates.contains(indexPath.item + 1) {        // 더미더미
+        // 날짜 & 정답률 60
+//        if indexPath.item + 1 == today && correctRate >= 0.6 {
+        if correctRates.count - 1 >= indexPath.item && correctRates[indexPath.item] >= 0.6 {
             cell.backgroundColor = .check
             cell.textLabel.text = "✔️"
         } else {
