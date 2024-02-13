@@ -7,13 +7,19 @@
 
 import UIKit
 import SnapKit
+import CoreData
 
 class AddVocaViewController: UIViewController {
     
-    private var titleLabel: UILabel = {
+    var vocaDataSource: [NSManagedObject] = []
+    var indexPath: IndexPath?
+    
+    var vocaTitle: UILabel = {
         let label = UILabel()
-        label.text = TotalVocabularyList.shared.list?[0].name
-        label.textColor = UIColor(named: "Team332Color")
+        if let category = SharedData.shared.enteredCategory {
+            label.text = "\(category)"
+        }
+        label.textColor =  UIColor(named: "Team332Color")
         label.font = .systemFont(ofSize: 22, weight: .heavy)
         
         return label
@@ -55,7 +61,7 @@ class AddVocaViewController: UIViewController {
         let button = UIButton()
         button.setTitle("추가", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(named: "Team332Color")
+        button.backgroundColor =  UIColor(named: "Team332Color")
         button.layer.cornerRadius = 8
         button.snp.makeConstraints {
             $0.width.equalTo(350)
@@ -67,6 +73,7 @@ class AddVocaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        vocaDataSource = CoreDataManager.shared.readVoca()
         self.hideKeyboardWhenTappedAround()
         
         setUI()
@@ -75,7 +82,7 @@ class AddVocaViewController: UIViewController {
     private func setUI() {
         view.backgroundColor = .white
         
-        view.addSubview(titleLabel)
+        view.addSubview(vocaTitle)
         view.addSubview(vocaStack)
         view.addSubview(submitButton)
         
@@ -85,13 +92,13 @@ class AddVocaViewController: UIViewController {
     }
     
     private func setAutoLayout() {
-        titleLabel.snp.makeConstraints {
+        vocaTitle.snp.makeConstraints {
             $0.top.equalTo(view.snp.top).inset(30)
             $0.centerX.equalTo(view)
         }
         
         vocaStack.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(50)
+            $0.top.equalTo(vocaTitle.snp.bottom).offset(50)
             $0.centerX.equalTo(view)
         }
         
@@ -102,51 +109,19 @@ class AddVocaViewController: UIViewController {
     }
     
     @objc func tappedSubmitButton() {
-        guard var totalVocabularyList = TotalVocabularyList.shared.list else {
-            // If the list is nil, create a new array
-            TotalVocabularyList.shared.list = [VocabularyList]()
-            return
-        }
-        
-        // Get the entered word and meaning from the text fields
+        // 단어,뜻 저장
         guard let wordText = (vocaStack.arrangedSubviews[0] as? UITextField)?.text,
-              let meaningText = (vocaStack.arrangedSubviews[1] as? UITextField)?.text else {
-            // Handle the case where the text fields are not found
-            return
-        }
+              let meaningText = (vocaStack.arrangedSubviews[1] as? UITextField)?.text
+        else { return }
         
-        // Create a new Word instance
-        let newWord = Word(word: wordText, meaning: meaningText, isCorrect: false)
-        
-        // Create a new VocabularyList instance
-        let newVocabularyList = VocabularyList(name: "", word: [newWord], isCompleted: false)
-        
-        // Add the new VocabularyList to the totalVocabularyList
-        totalVocabularyList.append(newVocabularyList)
-        
-        // Update the list property of TotalVocabularyList
-        TotalVocabularyList.shared.list = totalVocabularyList
-        
-        // Optionally, you can print the updated list
-        print(TotalVocabularyList.shared.list ?? [])
+        CoreDataManager.shared.createVoca(word: wordText, meaning: meaningText)
+        self.vocaDataSource = CoreDataManager.shared.readVoca()
         
         // 추가 후 텍스트필드 비우고 커서 없애기
         (vocaStack.arrangedSubviews[0] as? UITextField)?.text = ""
         (vocaStack.arrangedSubviews[1] as? UITextField)?.text = ""
         (vocaStack.arrangedSubviews[0] as? UITextField)?.resignFirstResponder()
         (vocaStack.arrangedSubviews[1] as? UITextField)?.resignFirstResponder()
-    }
-}
-
-extension AddVocaViewController {
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyBoard() {
-        view.endEditing(true)
     }
 }
 
