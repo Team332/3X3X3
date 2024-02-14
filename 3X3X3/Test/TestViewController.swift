@@ -21,7 +21,6 @@ class TestViewController: UIViewController {
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
-    let listName: String = SharedData.shared.enteredCategory!
     var vocaList: [WordCard] = []
     var copiedList: [WordCard]?
     
@@ -88,11 +87,10 @@ class TestViewController: UIViewController {
         setStackView()
         addViews()
         setConstraint()
-        
-//        createSampleData()
-//        print(getListByName(name: "My Vocabulary"))
-        getListByName(name: listName)
-//        print(vocaList)
+    
+        if let name = SharedData.shared.enteredCategory {
+            getListByName(name: name)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,6 +102,10 @@ class TestViewController: UIViewController {
         super.viewDidAppear(animated)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print(#function)
+    }
     
     private func setStackView() {
         [quizLabel, wordLabel].map {
@@ -122,7 +124,6 @@ class TestViewController: UIViewController {
         quizLabel.snp.makeConstraints({ make in
             make.height.equalTo(60)
             make.width.equalTo(80)
-            //            make.leading.equalTo(wordLabel).offset(20)
         })
         wordLabel.snp.makeConstraints({ make in
             make.width.equalTo(self.view).multipliedBy(0.8)
@@ -146,43 +147,11 @@ class TestViewController: UIViewController {
         })
         stopButton.snp.makeConstraints({ make in
             make.height.equalTo(self.view).multipliedBy(0.05)
-            //            make.width.equalTo(self.view).multipliedBy(0.4)
             make.centerX.equalTo(self.view)
             make.top.equalTo(submitButton.snp.bottom).offset(30)
         })
     }
     
-    // MARK: Dummy Data
-    func createSampleData() {
-        if let context = persistentContainer?.viewContext {
-            
-            // VocabularyList 생성
-            let vocabularyList = VocabularyList(context: context)
-            vocabularyList.name = "My Vocabulary"
-            
-            // Word 생성 및 관계 설정
-            let word1 = Word(context: context)
-            word1.word = "Apple"
-            word1.meaning = "A fruit."
-            //            word1.vocabularyList = vocabularyList
-            
-            let word2 = Word(context: context)
-            word2.word = "Car"
-            word2.meaning = "A vehicle."
-            //            word2.vocabularyList = vocabularyList
-            
-            let wordSet: NSSet = [word1, word2]
-            vocabularyList.words = wordSet
-            
-            do {
-                try context.save()
-            } catch {
-                print("Error saving context: \(error)")
-            }
-        }
-    }
-    
-    // 시험끝날 때, isCompleted 변수 바꾸는 데 쓸거임
     private func getListByName(name: String) {
         guard let context = persistentContainer?.viewContext else { return }
         
@@ -240,7 +209,6 @@ class TestViewController: UIViewController {
                     let finishAlert = UIAlertController(title: "마지막 단어입니다! 제출하고 시험 결과로 넘어가시겠습니까?", message: nil, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "제출", style: .default, handler: { action in
                         self.applyChangesToCoreData()
-//                        self.present(TestResultViewController(), animated: true)
                         self.navigationController?.pushViewController(TestResultViewController(), animated: true)
                         return// 시험 결과 뷰로 넘어가는 코드
                     })
@@ -271,7 +239,6 @@ class TestViewController: UIViewController {
         let stopAlert = UIAlertController(title: "정말 시험을 중단하시겠습니까?", message: "지금까지 본 시험의 결과는 저장되지 않아요!", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "중단", style: .default, handler: { action in
             self.navigationController?.popViewController(animated: true)
-//            self.performSegue(withIdentifier: "segueToVocabularyListView", sender: nil)
         })
         let noAction = UIAlertAction(title: "계속하기", style: .default)
         stopAlert.addAction(okAction)
@@ -288,6 +255,7 @@ class TestViewController: UIViewController {
             let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "word == %@", thing.word)
             
+            // 단어장 내부에 Word entity의 isCorrect 값이 모두 true인 경우에만
             do {
                 let results = try context.fetch(fetchRequest)
                 if let word = results.first {
