@@ -13,10 +13,7 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
     lazy var correctRates: [CGFloat] = []
 
     private let reuseIdentifier = "Cell"
-//    var correctRates: [CGFloat] {
-//        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
-//    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,8 +35,6 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         
         cell.textLabel.text = "\(indexPath.item + 1)"
         
-        // 날짜 & 정답률 60
-//        if indexPath.item + 1 == today && correctRate >= 0.6 {
         if correctRates.count - 1 >= indexPath.item && correctRates[indexPath.item] >= 0.6 {
             cell.backgroundColor = .check
             cell.textLabel.text = "✔️"

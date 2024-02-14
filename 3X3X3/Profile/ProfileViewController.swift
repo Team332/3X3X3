@@ -18,10 +18,6 @@ class ProfileViewController: UIViewController {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
     
-//    private var correctRates: [CGFloat] {
-//        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -65,19 +61,22 @@ class ProfileViewController: UIViewController {
         print(correctRate)
         
         user.userLevel = Int64(totalQuestion / 10)
-//        lazy var level = totalQuestion / 100
         rankLabel.text = "\(user.userLevel) 급"
         
         user.userEXP = Int64(expPercentage * 100)
-//        lazy var percentage = Int(expPercentage * 100)
         expPercentLabel.text = "\(user.userEXP) / 100"
         expLabelText.text = "\(user.userEXP)%"
         
-//        lazy var average = correctRates.isEmpty ? 0 : correctRates.reduce(0, +) / CGFloat(correctRates.count)
         user.averageScore = correctRate * 100
-//        lazy var averageString = Int(correctRate * 100)
         averageScoreLabel.text = "\(user.averageScore) 점"
     }
+    
+    private lazy var samStack: UIStackView = {
+        let samStack = UIStackView()
+        samStack.axis = .vertical
+        samStack.spacing = 40
+        return samStack
+    }()
     
     private lazy var samsamImage: UIImageView = {
         let samsamImage = UIImageView()
@@ -86,6 +85,18 @@ class ProfileViewController: UIViewController {
         guard let image = UIImage(named: "332") else { return UIImageView() }
         samsamImage.image = image
         return samsamImage
+    }()
+    
+    private lazy var userName: UILabel = {
+        let userName = UILabel()
+        userName.text = "손 성 수"
+        userName.font = UIFont.boldSystemFont(ofSize: 22)
+        userName.layer.cornerRadius = 10
+        userName.layoutMargins = UIEdgeInsets(top: 10, left: 40, bottom: 10, right: 40)
+        userName.layer.masksToBounds = true
+        userName.backgroundColor = UIColor.team332.withAlphaComponent(0.8)
+        userName.textAlignment = .center
+        return userName
     }()
     
     private lazy var totalWordsLabel: UILabel = {
@@ -195,9 +206,12 @@ class ProfileViewController: UIViewController {
     }()
     
     func setUi() {
-        view.addSubview(samsamImage)
+        view.addSubview(samStack)
         view.addSubview(scoreLabelStack)
         view.addSubview(expStack)
+        
+        samStack.addArrangedSubview(samsamImage)
+        samStack.addArrangedSubview(userName)
         
         scoreLabelStack.addArrangedSubview(labelStack)
         scoreLabelStack.addArrangedSubview(scoreStack)
@@ -227,8 +241,8 @@ class ProfileViewController: UIViewController {
             make.trailing.equalTo(-15)
         }
         
-        samsamImage.snp.makeConstraints{ make in
-            make.top.equalTo(80)
+        samStack.snp.makeConstraints{ make in
+            make.top.equalTo(90)
             make.right.equalTo(-35)
         }
     }
