@@ -9,16 +9,13 @@ import Foundation
 import UIKit
 
 class CalendarViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
+    lazy var correctRate: CGFloat = 0.0
+    lazy var correctRates: [CGFloat] = []
+
     private let reuseIdentifier = "Cell"
-    var correctRates: [CGFloat] {
-        if let cor = UserDefaults.standard.object(forKey: "CorrectRates") {
-            return cor as! [CGFloat]
-        } else {
-            return [0]
-        }
+//    var correctRates: [CGFloat] {
 //        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
-    }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +25,8 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         collectionView.layer.cornerRadius = 15
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        
+        correctRates.append(correctRate)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

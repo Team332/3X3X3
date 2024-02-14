@@ -74,6 +74,33 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
             self.tabBar.scrollEdgeAppearance = .none
         }
     }
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        
+        guard let fromView = selectedViewController?.view, let toView = viewController.view else {
+            return false
+        }
+        
+        guard let fromIndex = tabBarController.viewControllers?.firstIndex(of: selectedViewController!),
+              let toIndex = tabBarController.viewControllers?.firstIndex(of: viewController) else {
+            return false
+        }
+        if fromIndex == toIndex {
+                return false
+            }
+        var selectedAnimationOption: UIView.AnimationOptions = .transitionCurlUp
+        
+        if fromIndex < toIndex {
+            selectedAnimationOption = .transitionCurlUp
+        } else {
+            selectedAnimationOption = .transitionCurlDown
+        }
+        
+        UIView.transition(from: fromView, to: toView, duration: 0.3, options: selectedAnimationOption) { _ in
+        }
+        
+        return true
+    }
+
     /*
     // MARK: - Navigation
 

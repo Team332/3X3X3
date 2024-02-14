@@ -10,28 +10,23 @@ import SnapKit
 import CoreData
 
 class ProfileViewController: UIViewController {
-//    let testResultVC = TestResultViewController()
     private lazy var totalQuestion: Int = 0
     
+    lazy var correctRate: CGFloat = 0.0
+
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
     
-    private var correctRates: [CGFloat] {
-        if let cor = UserDefaults.standard.object(forKey: "CorrectRates") {
-            return cor as! [CGFloat]
-        } else {
-            return [0]
-        }
+//    private var correctRates: [CGFloat] {
 //        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
-    }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUi()
         
-//        updateExperience()
         let calendarVC = CalendarViewController(collectionViewLayout: UICollectionViewFlowLayout())
         addChild(calendarVC)
         view.addSubview(calendarVC.view)
@@ -60,26 +55,28 @@ class ProfileViewController: UIViewController {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
         
-        lazy var total = User(context: context)
-        
-//        total.totalWords = 332
-        
+        lazy var user = User(context: context)
+                
         lazy var expPercentage = min(Double(totalQuestion % 100) / 100.0, 1.0)
         expBar.setProgress(Float(expPercentage), animated: true)
         
-        totalWordsLabel.text = "\(totalQuestion) 개"
-        print("총 단어 수: \(totalQuestion)")
+        user.totalWords = Int64(totalQuestion)
+        totalWordsLabel.text = "\(user.totalWords) 개"
+        print(correctRate)
         
-        lazy var level = totalQuestion / 100
-        rankLabel.text = "\(level) 등급"
+        user.userLevel = Int64(totalQuestion / 10)
+//        lazy var level = totalQuestion / 100
+        rankLabel.text = "\(user.userLevel) 급"
         
-        lazy var percentage = Int(expPercentage * 100)
-        expPercentLabel.text = "\(percentage) / 100"
-        expLabelText.text = "\(percentage)%"
+        user.userEXP = Int64(expPercentage * 100)
+//        lazy var percentage = Int(expPercentage * 100)
+        expPercentLabel.text = "\(user.userEXP) / 100"
+        expLabelText.text = "\(user.userEXP)%"
         
-        lazy var average = correctRates.isEmpty ? 0 : correctRates.reduce(0, +) / CGFloat(correctRates.count)
-        lazy var averageString = Int(average * 100)
-        averageScoreLabel.text = "\(averageString) 점"
+//        lazy var average = correctRates.isEmpty ? 0 : correctRates.reduce(0, +) / CGFloat(correctRates.count)
+        user.averageScore = correctRate * 100
+//        lazy var averageString = Int(correctRate * 100)
+        averageScoreLabel.text = "\(user.averageScore) 점"
     }
     
     private lazy var samsamImage: UIImageView = {

@@ -32,8 +32,23 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         setupUI()
         setupConstraint()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        sendData()
+    }
 
 // MARK: - Data Setup
+    private func sendData() {
+        let profileViewController = ProfileViewController()
+        profileViewController.correctRate = correctRate
+        navigationController?.pushViewController(profileViewController, animated: true)
+        
+        let calendarViewController = CalendarViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        calendarViewController.correctRate = correctRate
+        navigationController?.pushViewController(calendarViewController, animated: true)
+
+    }
 
     private func setupData() {
         dummyData()
