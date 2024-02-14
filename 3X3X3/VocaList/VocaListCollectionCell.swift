@@ -44,7 +44,7 @@ class VocaListCollectionCell: UICollectionViewCell {
     private var studyButton: UIButton = {
         let button = UIButton()
         button.setTitle("공부하기", for: .normal)
-        button.setTitleColor(.black /*UIColor(named: "Team332Color")*/, for: .normal)
+        button.setTitleColor(UIColor(named: "Team332Color"), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         button.layer.cornerRadius = 8
         button.backgroundColor = .white
@@ -58,7 +58,7 @@ class VocaListCollectionCell: UICollectionViewCell {
     private var addVocaButton: UIButton = {
         let button = UIButton()
         button.setTitle("단어 추가", for: .normal)
-        button.setTitleColor(.black/*UIColor(named: "Team332Color")*/, for: .normal)
+        button.setTitleColor(UIColor(named: "Team332Color"), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         button.backgroundColor = .white
         button.layer.cornerRadius = 8
