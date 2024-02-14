@@ -12,7 +12,12 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
     
     private let reuseIdentifier = "Cell"
     var correctRates: [CGFloat] {
-        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
+        if let cor = UserDefaults.standard.object(forKey: "CorrectRates") {
+            return cor as! [CGFloat]
+        } else {
+            return [0]
+        }
+//        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
     }
     
     override func viewDidLoad() {

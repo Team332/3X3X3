@@ -40,7 +40,6 @@ class StudyViewController: UIViewController {
     // 단어 앞면 라벨
     let label1: UILabel = {
         let label1 = UILabel()
-//        label1.text = "영어단어"
         label1.textAlignment = .center
         label1.font = UIFont.systemFont(ofSize: 24)
         label1.numberOfLines = 4
@@ -112,13 +111,20 @@ class StudyViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(label2Tapped))
         label2.isUserInteractionEnabled = true // 사용자 상호작용 허용
         label2.addGestureRecognizer(tapGesture)
+        
+        // gotIt 버튼에 액션 추가
+        gotItButton.addTarget(self, action: #selector(gotItButtonTapped), for: .touchUpInside)
+        
+        // IDK 버튼에 액션 추가
+        idkButton.addTarget(self, action: #selector(idkButtonTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         displayFirstWord()
-                    }
+    }
+    
     func setViews() {
         // 뷰에 서브뷰로 추가
         view.addSubview(titleLabel)
@@ -170,10 +176,11 @@ class StudyViewController: UIViewController {
     
     private func displayFirstWord() {
         if let name = listName {
+            print("name: \(name)")
             getListByName(name: name)
         }
         
-//        self.label1.text = vocaList[0].word
+        self.label1.text = vocaList.first?.word ?? ""
         print(listName)
         print(vocaList)
     }
@@ -202,7 +209,7 @@ class StudyViewController: UIViewController {
         // VocabularyList에 연결된 Word들을 가져오기 위한 fetchRequest 생성
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
         // VocabularyList와의 관계를 통해 Word를 필터링
-        fetchRequest.predicate = NSPredicate(format: "vocabularyList == %@", vocabularyList)
+        fetchRequest.predicate = NSPredicate(format: "vocabularyList == %@ AND isCorrect == false", vocabularyList)
         
         do {
             // CoreData에서 Word들을 가져옴
@@ -229,8 +236,87 @@ class StudyViewController: UIViewController {
         if !isLabel2Clicked {
             // 클릭된 상태로 변경하고 텍스트 업데이트
             isLabel2Clicked = true
-            label2.text = "한글 뜻" // 여기에 실제 한글 뜻을 설정해주세요
+            if let meaning = vocaList.first?.meaning {
+                label2.text = meaning
+            } else {
+                label2.text = "뜻을 찾을 수 없습니다."
+            }
             print("label2가 클릭되었습니다.")
+        }
+    }
+    
+    // gotIt 버튼 액션
+    @objc func gotItButtonTapped() {
+        // 현재 단어가 nil이 아닌지 확인
+        guard var currentWord = vocaList.first else {
+            // 현재 단어가 없으면 처리하지 않음
+            return
+        }
+
+        // Core Data에서 현재 단어의 관련 객체 가져오기
+        guard let context = persistentContainer?.viewContext else {
+            return
+        }
+        
+        let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "word == %@", currentWord.word)
+        
+        do {
+            // Core Data에서 해당 단어에 대한 객체 가져오기
+            let words = try context.fetch(fetchRequest)
+            guard let coreDataWord = words.first else {
+                // 해당 단어의 객체를 찾지 못했을 경우 처리하지 않음
+                return
+            }
+            
+            // 현재 단어의 isCorrect 속성을 true로 변경
+            coreDataWord.isCorrect = true
+            
+            // 변경사항 저장
+            try context.save()
+            print("Changes saved to Core Data.")
+        } catch {
+            print("Error saving context: \(error)")
+        }
+
+        // vocaList에서 현재 단어를 제거
+        vocaList.removeFirst()
+
+        // 다음 단어가 있으면 보여줌
+        if let nextWord = vocaList.first {
+            label1.text = nextWord.word
+            label2.text = " " // 뒷면 라벨 초기화
+            isLabel2Clicked = false // 라벨2 클릭 상태 초기화
+        } else {
+            // 다음 단어가 없으면 FinishedViewController로 이동
+            let finishedVC = FinishedViewController()
+            // 이동 코드 작성
+            navigationController?.pushViewController(finishedVC, animated: true)
+        }
+    }
+
+    
+    // IDK 버튼 액션
+    @objc func idkButtonTapped() {
+        // 현재 단어가 nil이 아닌지 확인
+        guard let currentWord = vocaList.first else {
+            // 현재 단어가 없으면 처리하지 않음
+            return
+        }
+        
+        // vocaList에서 현재 단어를 제거
+        vocaList.removeFirst()
+        
+        // 다음 단어가 있으면 보여줌
+        if let nextWord = vocaList.first {
+            label1.text = nextWord.word
+            label2.text = " " // 뒷면 라벨 초기화
+            isLabel2Clicked = false // 라벨2 클릭 상태 초기화
+        } else {
+            // 다음 단어가 없으면 FinishedViewController로 이동
+            let finishedVC = FinishedViewController()
+            // 이동 코드 작성
+            navigationController?.pushViewController(finishedVC, animated: true)
         }
     }
 }

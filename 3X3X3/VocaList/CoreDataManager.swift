@@ -56,6 +56,21 @@ class CoreDataManager {
         object.setValue(meaning, forKey: "meaning")
         object.setValue(false, forKey: "isCorrect")
         
+        //SharedData.shared.enteredCategory에 저장된 String을 이름으로 가지는 VocabularyList 객체를 가져와서 넣어줘야 됨
+        var list: VocabularyList?
+        let fetchRequest: NSFetchRequest<VocabularyList> = VocabularyList.fetchRequest()
+        if let name = SharedData.shared.enteredCategory {
+            fetchRequest.predicate = NSPredicate(format: "name = %@", name)
+            do {
+                let lists = try context.fetch(fetchRequest)
+                if let list1 = lists.first {
+                    list = list1
+                }
+            } catch { print("Error = \(error)") }
+        }
+
+        object.setValue(list, forKey: "vocabularyList")
+        
         try? context.save()
     }
     

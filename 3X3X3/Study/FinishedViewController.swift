@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-#Preview{
-    FinishedViewController()
-}
+//#Preview{
+//    FinishedViewController()
+//}
 
 
 
@@ -30,18 +30,24 @@ class FinishedViewController: UIViewController {
 //        present(testViewController, animated: true, completion: nil)
     }
     
-    // 더 공부하기 버튼이 클릭되었을때 실행되는 함수
+    // 더 공부하기 버튼이 클릭되었을 때 실행되는 함수
     @objc func backToStudyButtonTapped() {
-        // VocaListViewController 생성
-        let vocaListVC = VocaListViewController()
-        if let tabBarController = self.tabBarController {
-            // UITabBarController가 있으면 해당 뷰 컨트롤러로 전환
-            tabBarController.selectedIndex = 0 // 이 숫자는 UITabBarController에서 몇 번째 아이템으로 전환할지를 나타냅니다.
-        } else {
-            // UITabBarController가 없으면 모달로 전환
+        // 네비게이션 컨트롤러가 존재하는지 확인
+        guard let navigationController = navigationController else {
+            // 네비게이션 컨트롤러가 존재하지 않는다면, 모달로 VocaListViewController를 표시하고 현재 뷰 컨트롤러를 닫음
+            let vocaListVC = VocaListViewController()
             present(vocaListVC, animated: true, completion: nil)
-            navigationController?.popViewController(animated: true)
+            return
         }
+        
+        // 네비게이션 스택에 루트 뷰 컨트롤러가 있는지 확인
+        guard let rootViewController = navigationController.viewControllers.first else {
+            // 루트 뷰 컨트롤러가 존재하지 않는다면, 아무 작업도 수행하지 않고 함수 종료
+            return
+        }
+        
+        // 루트 뷰 컨트롤러로 이동
+        navigationController.popToViewController(rootViewController, animated: true)
     }
     
     override func viewDidLoad() {
