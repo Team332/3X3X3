@@ -197,15 +197,23 @@ class TestViewController: UIViewController {
     
     //MARK: Button Actions
     @objc func submit() {
-        var wordList = vocaList
-        for i in 0..<wordList.count {
-            if wordLabel.text == wordList[i].word {
-                // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
-                wordList[i].isCorrect = (meaningTextField.text == wordList[i].meaning) ? true : false
-                
-                print(wordList[i].isCorrect)
-                self.copiedList = wordList // 여기서 self.copiedList값 갱신
-                if i == wordList.count - 1 {
+//        var wordList = vocaList
+//        for i in 0..<wordList.count {
+//            if wordLabel.text == wordList[i].word {
+//                // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
+//                wordList[i].isCorrect = (meaningTextField.text == wordList[i].meaning) ? true : false
+//                
+//                print(wordList[i].isCorrect)
+//                self.copiedList = wordList // 여기서 self.copiedList값 갱신
+        
+        for i in 0..<vocaList.count {
+                    if wordLabel.text == vocaList[i].word {
+                        // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
+                        vocaList[i].isCorrect = (meaningTextField.text == vocaList[i].meaning) ? true : false
+        
+                        print(vocaList[i].isCorrect)
+        
+                if i == vocaList.count - 1 {
                     let finishAlert = UIAlertController(title: "마지막 단어입니다! 제출하고 시험 결과로 넘어가시겠습니까?", message: nil, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "제출", style: .default, handler: { action in
                         self.applyChangesToCoreData()
@@ -225,10 +233,18 @@ class TestViewController: UIViewController {
     }
     
     func printNextWord() {
-        var wordList = vocaList
-        for i in 0..<wordList.count {
-            if wordList[i].word == wordLabel.text {
-                wordLabel.text = wordList[i + 1].word
+//        var wordList = vocaList
+//        for i in 0..<wordList.count {
+//            if wordList[i].word == wordLabel.text {
+//                wordLabel.text = wordList[i + 1].word
+//                meaningTextField.text = ""
+//                return
+//            }
+//        }
+        
+        for i in 0..<vocaList.count {
+            if vocaList[i].word == wordLabel.text {
+                wordLabel.text = vocaList[i + 1].word
                 meaningTextField.text = ""
                 return
             }
@@ -247,7 +263,8 @@ class TestViewController: UIViewController {
     }
     
     func applyChangesToCoreData() {
-        guard let list = copiedList else { return }
+        let list = vocaList
+//        guard let list = vocaList else { return }
         guard let context = persistentContainer?.viewContext else { return }
         
         
@@ -260,6 +277,7 @@ class TestViewController: UIViewController {
                 let results = try context.fetch(fetchRequest)
                 if let word = results.first {
                     word.isCorrect = thing.isCorrect
+                    print(word.isCorrect)
                     try context.save()
                 } else {
                     print("Word not found")
