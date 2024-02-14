@@ -118,7 +118,8 @@ class StudyViewController: UIViewController {
         super.viewWillAppear(animated)
         
         displayFirstWord()
-                    }
+    }
+    
     func setViews() {
         // 뷰에 서브뷰로 추가
         view.addSubview(titleLabel)
@@ -170,10 +171,11 @@ class StudyViewController: UIViewController {
     
     private func displayFirstWord() {
         if let name = listName {
+            print("name: \(name)")
             getListByName(name: name)
         }
         
-//        self.label1.text = vocaList[0].word
+        self.label1.text = vocaList[0].word
         print(listName)
         print(vocaList)
     }

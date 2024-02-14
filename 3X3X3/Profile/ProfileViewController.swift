@@ -18,7 +18,12 @@ class ProfileViewController: UIViewController {
     }
     
     private var correctRates: [CGFloat] {
-        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
+        if let cor = UserDefaults.standard.object(forKey: "CorrectRates") {
+            return cor as! [CGFloat]
+        } else {
+            return [0]
+        }
+//        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
     }
     
     override func viewDidLoad() {
@@ -63,7 +68,7 @@ class ProfileViewController: UIViewController {
         expBar.setProgress(Float(expPercentage), animated: true)
         
         totalWordsLabel.text = "\(totalQuestion) 개"
-        print(totalQuestion)
+        print("총 단어 수: \(totalQuestion)")
         
         lazy var level = totalQuestion / 100
         rankLabel.text = "\(level) 등급"

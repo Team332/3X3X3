@@ -15,7 +15,23 @@ class SharedData {
     
     static let shared = SharedData()
     
-    var enteredCategory: String?
+//    var enteredCategoryEntity: VocabularyList?
+    var enteredCategory: String? 
+//    {
+//        didSet {
+//            if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext, let name = enteredCategory {
+//                let fetchRequest: NSFetchRequest<VocabularyList> = VocabularyList.fetchRequest()
+//                fetchRequest.predicate = NSPredicate(format: "name = %@", name)
+//                
+//                do {
+//                    let lists = try context.fetch(fetchRequest)
+//                    if let list = lists.first {
+//                        enteredCategoryEntity = list
+//                    }
+//                } catch { print("Error = \(error)") }
+//            }
+//        }
+//    }
 }
 
 class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {

@@ -2,6 +2,24 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:VocabularyList+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:VocabularyList+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:Word+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:Word+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:User+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:User+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:3X3X3.xcodeproj">
    </FileRef>
    <FileRef
