@@ -11,6 +11,8 @@ import CoreData
 
 // 싱글톤 패턴 사용해서 데이터 전달하기 위함
 class SharedData {
+    private init() {}
+    
     static let shared = SharedData()
     
     var enteredCategory: String?
@@ -114,7 +116,7 @@ class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
             guard let category = alert.textFields?.first?.text, !category.isEmpty
             else { return }
             
-            SharedData.shared.enteredCategory = category
+//            SharedData.shared.enteredCategory = category
 
             // 단어장 이름 저장
             CoreDataManager.shared.createVocaCategory(name: category)

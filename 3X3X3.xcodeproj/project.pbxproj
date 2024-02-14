@@ -19,6 +19,7 @@
 		14DE56F82B70D73300A2C6D9 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56F72B70D73300A2C6D9 /* TestViewController.swift */; };
 		14DE56FA2B70D73D00A2C6D9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56F92B70D73D00A2C6D9 /* ProfileViewController.swift */; };
 		14DE56FC2B70D74A00A2C6D9 /* VocaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56FB2B70D74A00A2C6D9 /* VocaListViewController.swift */; };
+		14DE570E2B7B664300A2C6D9 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0009A9D32B725FB8007C85B7 /* CalendarViewController.swift */; };
 		733C783A2B7300AA00362FB4 /* VocaListCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733C78392B7300AA00362FB4 /* VocaListCollectionCell.swift */; };
 		733C783C2B73192200362FB4 /* AddVocaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733C783B2B73192200362FB4 /* AddVocaViewController.swift */; };
 		7353FE932B7865270038EFA3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7353FE922B7865270038EFA3 /* CoreDataManager.swift */; };
@@ -288,6 +289,7 @@
 				14DE56D52B70B2EF00A2C6D9 /* SceneDelegate.swift in Sources */,
 				14DE56FA2B70D73D00A2C6D9 /* ProfileViewController.swift in Sources */,
 				14DE56F42B70D71A00A2C6D9 /* StudyViewController.swift in Sources */,
+				14DE570E2B7B664300A2C6D9 /* CalendarViewController.swift in Sources */,
 				14DE56DD2B70B2EF00A2C6D9 /* _X3X3.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
