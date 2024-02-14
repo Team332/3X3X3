@@ -89,10 +89,10 @@ class TestViewController: UIViewController {
         addViews()
         setConstraint()
         
-        createSampleData()
-        print(getListByName(name: "My Vocabulary"))
-//        print(getListByName(name: listName))
-        print(vocaList)
+//        createSampleData()
+//        print(getListByName(name: "My Vocabulary"))
+        getListByName(name: listName)
+//        print(vocaList)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -183,8 +183,8 @@ class TestViewController: UIViewController {
     }
     
     // 시험끝날 때, isCompleted 변수 바꾸는 데 쓸거임
-    private func getListByName(name: String) -> VocabularyList? {
-        guard let context = persistentContainer?.viewContext else { return nil }
+    private func getListByName(name: String) {
+        guard let context = persistentContainer?.viewContext else { return }
         
         let fetchRequest: NSFetchRequest<VocabularyList> = VocabularyList.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "name == %@", name)
@@ -194,10 +194,8 @@ class TestViewController: UIViewController {
             if let list = lists.first {
                 iterateThroughWords(for: list)
             }
-            return lists.first
         } catch {
             print("Error: \(error)")
-            return nil
         }
     }
     
@@ -205,7 +203,7 @@ class TestViewController: UIViewController {
         // VocabularyList에 연결된 Word들을 가져오기 위한 fetchRequest 생성
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
         // VocabularyList와의 관계를 통해 Word를 필터링
-        fetchRequest.predicate = NSPredicate(format: "vocabularyList == %@", vocabularyList)
+        fetchRequest.predicate = NSPredicate(format: "vocabularyList == %@ AND isCorrect == false", vocabularyList)
         
         do {
             // CoreData에서 Word들을 가져옴
@@ -272,7 +270,8 @@ class TestViewController: UIViewController {
     @objc func stopTest() {
         let stopAlert = UIAlertController(title: "정말 시험을 중단하시겠습니까?", message: "지금까지 본 시험의 결과는 저장되지 않아요!", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "중단", style: .default, handler: { action in
-            self.performSegue(withIdentifier: "segueToVocabularyListView", sender: nil)
+            self.navigationController?.popViewController(animated: true)
+//            self.performSegue(withIdentifier: "segueToVocabularyListView", sender: nil)
         })
         let noAction = UIAlertAction(title: "계속하기", style: .default)
         stopAlert.addAction(okAction)
