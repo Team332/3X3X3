@@ -21,13 +21,13 @@ class FinishedViewController: UIViewController {
         let testViewController = TestViewController()
         
         // navigationController가 있을 경우 push를 사용하여 뷰 컨트롤러 전환
-        //navigationController?.pushViewController(testViewController, animated: true)
+        navigationController?.pushViewController(testViewController, animated: true)
         // 모달 전환 시 트랜지션 스타일을 .fullScreen으로 설정
         //testViewController.modalPresentationStyle = .fullScreen
         // 모달 전환 시 슬라이딩 애니메이션 비활성화
         //testViewController.modalTransitionStyle = .crossDissolve
         // navigationController가 없을 경우 present를 사용하여 모달로 뷰 컨트롤러 전환
-        present(testViewController, animated: true, completion: nil)
+//        present(testViewController, animated: true, completion: nil)
     }
     
     // 더 공부하기 버튼이 클릭되었을때 실행되는 함수
@@ -40,6 +40,7 @@ class FinishedViewController: UIViewController {
         } else {
             // UITabBarController가 없으면 모달로 전환
             present(vocaListVC, animated: true, completion: nil)
+            navigationController?.popViewController(animated: true)
         }
     }
     

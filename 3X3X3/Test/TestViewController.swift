@@ -21,6 +21,7 @@ class TestViewController: UIViewController {
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
+    let listName: String = SharedData.shared.enteredCategory!
     var vocaList: [WordCard] = []
     var copiedList: [WordCard]?
     
@@ -90,6 +91,7 @@ class TestViewController: UIViewController {
         
         createSampleData()
         print(getListByName(name: "My Vocabulary"))
+//        print(getListByName(name: listName))
         print(vocaList)
     }
     
@@ -199,91 +201,6 @@ class TestViewController: UIViewController {
         }
     }
     
-    // CoreData 사용하도록 수정 필요
-    //MARK: Button Actions
-    @objc func submit() {
-        var wordList = vocaList
-        for i in 0..<wordList.count {
-            if wordLabel.text == wordList[i].word {
-                // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
-                wordList[i].isCorrect = (meaningTextField.text == wordList[i].meaning) ? true : false
-                
-                print(wordList[i].isCorrect)
-                self.copiedList = wordList // 여기서 self.copiedList값 갱신
-                if i == wordList.count - 1 {
-                    let finishAlert = UIAlertController(title: "마지막 단어입니다! 제출하고 시험 결과로 넘어가시겠습니까?", message: nil, preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "제출", style: .default, handler: { action in
-                        self.applyChangesToCoreData()
-                        self.present(TestResultViewController(), animated: true) // 이 부분 performSegue로 바꾸기
-                        return// 시험 결과 뷰로 넘어가는 코드
-                    })
-                    let denyAction = UIAlertAction(title: "취소", style: .cancel)
-                    finishAlert.addAction(okAction)
-                    finishAlert.addAction(denyAction)
-                    present(finishAlert, animated: true)
-                    return
-                }
-                printNextWord()
-                break
-            }
-        }
-    }
-    
-    
-    // 다음 단어 보여주는 함수, 마지막 단어일 때 제출하기 누르면 Alert 띄워서 마지막 단어임을 알리고, 시험 결과 페이지로 넘어간다고 알려주는 기능까지 추가하면 될 듯
-    func printNextWord() {
-        var wordList = vocaList
-        for i in 0..<wordList.count {
-            if wordList[i].word == wordLabel.text {
-                wordLabel.text = wordList[i + 1].word
-                meaningTextField.text = ""
-                return
-            }
-        }
-    }
-    
-    @objc func stopTest() {
-        let stopAlert = UIAlertController(title: "정말 시험을 중단하시겠습니까?", message: "지금까지 본 시험의 결과는 저장되지 않아요!", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "중단", style: .default, handler: { action in
-            self.performSegue(withIdentifier: "segueToVocabularyListView", sender: nil)
-        })
-        let noAction = UIAlertAction(title: "계속하기", style: .default)
-        stopAlert.addAction(okAction)
-        stopAlert.addAction(noAction)
-        present(stopAlert, animated: true)
-    }
-    
-    func segueToTestResultView() {
-        
-    }
-    
-    func segueToVocabularyListView() {
-        
-    }
-    
-    func applyChangesToCoreData() {
-        guard let list = copiedList else { return }
-        guard let context = persistentContainer?.viewContext else { return }
-        
-        
-        for thing in list {
-            let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "word == %@", thing.word)
-            
-            do {
-                let results = try context.fetch(fetchRequest)
-                if let word = results.first {
-                    word.isCorrect = true
-                    try context.save()
-                } else {
-                    print("Word not found")
-                }
-            } catch {
-                print("Error = \(error)")
-            }
-        }
-    }
-    
     func fetchWords(for vocabularyList: VocabularyList) -> [Word]? {
         // VocabularyList에 연결된 Word들을 가져오기 위한 fetchRequest 생성
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
@@ -310,6 +227,83 @@ class TestViewController: UIViewController {
         }
         print(vocaList)
     }
+    
+    //MARK: Button Actions
+    @objc func submit() {
+        var wordList = vocaList
+        for i in 0..<wordList.count {
+            if wordLabel.text == wordList[i].word {
+                // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
+                wordList[i].isCorrect = (meaningTextField.text == wordList[i].meaning) ? true : false
+                
+                print(wordList[i].isCorrect)
+                self.copiedList = wordList // 여기서 self.copiedList값 갱신
+                if i == wordList.count - 1 {
+                    let finishAlert = UIAlertController(title: "마지막 단어입니다! 제출하고 시험 결과로 넘어가시겠습니까?", message: nil, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "제출", style: .default, handler: { action in
+                        self.applyChangesToCoreData()
+//                        self.present(TestResultViewController(), animated: true)
+                        self.navigationController?.pushViewController(TestResultViewController(), animated: true)
+                        return// 시험 결과 뷰로 넘어가는 코드
+                    })
+                    let denyAction = UIAlertAction(title: "취소", style: .cancel)
+                    finishAlert.addAction(okAction)
+                    finishAlert.addAction(denyAction)
+                    present(finishAlert, animated: true)
+                    return
+                }
+                printNextWord()
+                break
+            }
+        }
+    }
+    
+    func printNextWord() {
+        var wordList = vocaList
+        for i in 0..<wordList.count {
+            if wordList[i].word == wordLabel.text {
+                wordLabel.text = wordList[i + 1].word
+                meaningTextField.text = ""
+                return
+            }
+        }
+    }
+    
+    @objc func stopTest() {
+        let stopAlert = UIAlertController(title: "정말 시험을 중단하시겠습니까?", message: "지금까지 본 시험의 결과는 저장되지 않아요!", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "중단", style: .default, handler: { action in
+            self.performSegue(withIdentifier: "segueToVocabularyListView", sender: nil)
+        })
+        let noAction = UIAlertAction(title: "계속하기", style: .default)
+        stopAlert.addAction(okAction)
+        stopAlert.addAction(noAction)
+        present(stopAlert, animated: true)
+    }
+    
+    func applyChangesToCoreData() {
+        guard let list = copiedList else { return }
+        guard let context = persistentContainer?.viewContext else { return }
+        
+        
+        for thing in list {
+            let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "word == %@", thing.word)
+            
+            do {
+                let results = try context.fetch(fetchRequest)
+                if let word = results.first {
+                    word.isCorrect = thing.isCorrect
+                    try context.save()
+                } else {
+                    print("Word not found")
+                }
+            } catch {
+                print("Error = \(error)")
+            }
+        }
+    }
+    
+    
 }
 
 //MARK: Dismiss Keyboard

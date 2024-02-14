@@ -20,6 +20,8 @@ class VocaListCollectionCell: UICollectionViewCell {
     weak var delegate: VocaListCollectionCellDelegate?
     var indexPath: IndexPath?
     
+    var sendName: ((String) -> ())?
+    
     private var deleteButton: UIButton = {
         let button = UIButton()
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
@@ -113,10 +115,16 @@ class VocaListCollectionCell: UICollectionViewCell {
     }
     
     @objc func tappedStudyButton() {
+        if let name = self.titleLabel.text {
+            SharedData.shared.enteredCategory = name
+        }
         delegate?.didTapStudyButton()
     }
     
     @objc func tappedAddVocaButton() {
+        if let name = self.titleLabel.text {
+            SharedData.shared.enteredCategory = name
+        }
         delegate?.didTapAddVocaButton()
     }
     
