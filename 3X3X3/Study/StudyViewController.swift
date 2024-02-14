@@ -123,7 +123,29 @@ class StudyViewController: UIViewController {
         super.viewWillAppear(animated)
         
         displayFirstWord()
+        
+        // 공부할 단어가 없는지 확인
+        if vocaList.isEmpty {
+            // 단어가 없는 경우 알림 표시
+            let alertController = UIAlertController(title: "공부할 단어 없음", message: "이 단어장에는 더 이상 \n 공부할 단어가 없습니다.\n 단어를 추가 후에 다시 공부해주세요.", preferredStyle: .alert)
+            
+            // 확인 버튼 추가
+            let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+                // 알림 닫기
+                alertController.dismiss(animated: true, completion: nil)
+                
+                // VocaListViewController로 돌아가기
+                self.navigationController?.popViewController(animated: true)
+            }
+            
+            // 확인 액션 추가
+            alertController.addAction(okAction)
+            
+            // 알림 표시
+            present(alertController, animated: true, completion: nil)
+        }
     }
+
     
     func setViews() {
         // 뷰에 서브뷰로 추가
