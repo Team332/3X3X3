@@ -196,9 +196,9 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         if correctRate >= 0.1 && correctRate < 0.4 {
             return "한 발짝 더 나가봐요! 걱정 마세요,\n 실력은 오늘도 업그레이드 중이에요."
         } else if correctRate >= 0.4 && correctRate < 0.7 {
-            return "와, 대단해요! 여기서 뭐하는 사람이에요? \n 미래의 퀴즈 마스터?"
-        } else if correctRate >= 0.7 && correctRate < 0.9 {
             return "이렇게 쉬운 걸 다 맞을 줄 알았는데,\n 실망이야~"
+        } else if correctRate >= 0.7 && correctRate < 0.9 {
+            return "와, 대단해요! 여기서 뭐하는 사람이에요? \n 미래의 퀴즈 마스터?"
         } else if correctRate >= 0.9 && correctRate < 1 {
             return "와우, 대단해요! 정말 신기해요.\n 세상에 나와서 퀴즈 대회를 개최하면 안 될까요?"
         } else {
