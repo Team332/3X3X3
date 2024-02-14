@@ -36,28 +36,8 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
 // MARK: - Data Setup
 
     private func setupData() {
-        dummyData()
         setupIncorrectWord()
         calculateCorrectRate()
-    }
-
-    // 더미 데이터
-    private func dummyData() {
-        guard let context = persistentContainer?.viewContext else {
-            return
-        }
-
-        let entity = NSEntityDescription.entity(forEntityName: "Word", in: context)!
-
-        let wordList: [NSManagedObject] = [
-            createWord(entity: entity, word: "Apple", meaning: "사과", isCorrect: true, context: context),
-            createWord(entity: entity, word: "Banana", meaning: "바나나", isCorrect: false, context: context),
-            createWord(entity: entity, word: "Carrot", meaning: "당근", isCorrect: true, context: context),
-        ]
-
-//            TotalVocabularyList.shared.list = [VocabularyList(name: "샘플 단어장 1", word: wordList, isCompleted: false)]
-//
-//            saveContext(context)
     }
 
     private func createWord(entity: NSEntityDescription, word: String, meaning: String, isCorrect: Bool, context: NSManagedObjectContext) -> NSManagedObject {
@@ -68,13 +48,6 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
 
         return wordObject
     }
-
-//    // 틀린 단어 필터링(collectionView)
-//    private func setupIncorrectWord() {
-//        if let wordList = TotalVocabularyList.shared.list?.flatMap({ $0.word }) {
-//            incorrectWord = wordList.filter { !$0.isCorrect }
-//        }
-//    }
 
     // 틀린 단어 필터링(collectionView)
     private func setupIncorrectWord() {
@@ -93,19 +66,6 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
             print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
-
-    // 정답률 계산
-//    private func calculateCorrectRate() {
-//        // 총 문제 수 계산
-//        if let vocabularyList = TotalVocabularyList.shared.list?.first {
-//            totalQuestion = vocabularyList.word.count
-//        }
-//
-//        // 틀린 단어 세기
-//        let incorrectWordCount = TotalVocabularyList.shared.list?.flatMap { $0.word }.filter { !$0.isCorrect }.count ?? 0
-//
-//        correctRate = CGFloat(totalQuestion - incorrectWordCount) / CGFloat(totalQuestion)
-//    }
 
     // 정답률 계산
     private func calculateCorrectRate() {
@@ -310,8 +270,6 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         wordLabel.font = UIFont.systemFont(ofSize: 18)
         cell.contentView.addSubview(wordLabel)
 
-//        let word = incorrectWord[indexPath.item].word
-//        let meaning = incorrectWord[indexPath.item].meaning
         let word = incorrectWords[indexPath.item].value(forKey: "word") as? String ?? ""
         let meaning = incorrectWords[indexPath.item].value(forKey: "meaning") as? String ?? ""
 
