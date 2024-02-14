@@ -7,11 +7,16 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class CalendarViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     lazy var correctRate: CGFloat = 0.0
     lazy var correctRates: [CGFloat] = []
+    private lazy var totalQuestion: Int = 0
 
+    var persistentContainer: NSPersistentContainer? {
+        (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    }
     private let reuseIdentifier = "Cell"
 
     override func viewDidLoad() {
@@ -22,8 +27,7 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         collectionView.layer.cornerRadius = 15
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        
-        correctRates.append(correctRate)
+
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -32,6 +36,25 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CalendarCell
+        guard let context = persistentContainer?.viewContext else {return cell}
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
+        do {
+            if let result = try context.fetch(fetchRequest) as? [NSManagedObject] {
+                
+                let wordsCount = try context.count(for: fetchRequest)
+                totalQuestion = wordsCount
+                let incorrectWordCount = result.filter { !($0.value(forKey: "isCorrect") as? Bool ?? true) }.count
+                let correctWordCount = totalQuestion - incorrectWordCount
+                
+                correctRate = CGFloat(correctWordCount) / CGFloat(totalQuestion)
+                correctRates.append(correctRate)
+                print(correctRates)
+
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
         
         cell.textLabel.text = "\(indexPath.item + 1)"
         

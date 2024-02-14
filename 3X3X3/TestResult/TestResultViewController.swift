@@ -31,6 +31,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         createCircle()
         setupUI()
         setupConstraint()
+        sendData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,13 +41,10 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
 
 // MARK: - Data Setup
     private func sendData() {
-        let profileViewController = ProfileViewController()
-        profileViewController.correctRate = correctRate
-        navigationController?.pushViewController(profileViewController, animated: true)
-        
-        let calendarViewController = CalendarViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        calendarViewController.correctRate = correctRate
-        navigationController?.pushViewController(calendarViewController, animated: true)
+        if let profileViewController = navigationController?.viewControllers.first(where: { $0 is ProfileViewController }) as? ProfileViewController {
+            profileViewController.correctRate = correctRate
+            //        navigationController?.pushViewController(profileViewController, animated: true)
+        }
 
     }
 

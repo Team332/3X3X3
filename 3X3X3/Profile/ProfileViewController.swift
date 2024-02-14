@@ -12,7 +12,7 @@ import CoreData
 class ProfileViewController: UIViewController {
     private lazy var totalQuestion: Int = 0
     
-    lazy var correctRate: CGFloat = 0.0
+    var correctRate: CGFloat = 0.0
 
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
@@ -21,8 +21,10 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        updateExperience()
+
         setUi()
-        
+
         let calendarVC = CalendarViewController(collectionViewLayout: UICollectionViewFlowLayout())
         addChild(calendarVC)
         view.addSubview(calendarVC.view)
@@ -45,8 +47,15 @@ class ProfileViewController: UIViewController {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
         do {
-            let wordsCount = try context.count(for: fetchRequest)
-            totalQuestion = wordsCount
+            if let result = try context.fetch(fetchRequest) as? [NSManagedObject] {
+                
+                let wordsCount = try context.count(for: fetchRequest)
+                totalQuestion = wordsCount
+                let incorrectWordCount = result.filter { !($0.value(forKey: "isCorrect") as? Bool ?? true) }.count
+                let correctWordCount = totalQuestion - incorrectWordCount
+                
+                correctRate = CGFloat(correctWordCount) / CGFloat(totalQuestion)
+            }
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
@@ -68,7 +77,7 @@ class ProfileViewController: UIViewController {
         expLabelText.text = "\(user.userEXP)%"
         
         user.averageScore = correctRate * 100
-        averageScoreLabel.text = "\(user.averageScore) 점"
+        averageScoreLabel.text = String(format: "%.1f점", user.averageScore)
     }
     
     private lazy var samStack: UIStackView = {
@@ -89,7 +98,7 @@ class ProfileViewController: UIViewController {
     
     private lazy var userName: UILabel = {
         let userName = UILabel()
-        userName.text = "손 성 수"
+        userName.text = "삼사미"
         userName.font = UIFont.boldSystemFont(ofSize: 22)
         userName.layer.cornerRadius = 10
         userName.layoutMargins = UIEdgeInsets(top: 10, left: 40, bottom: 10, right: 40)
