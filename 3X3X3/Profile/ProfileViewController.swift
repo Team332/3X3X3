@@ -73,7 +73,7 @@ class ProfileViewController: UIViewController {
         totalWordsLabel.text = "\(user.totalWords) 개"
 //        print(correctRate)
         
-        user.userLevel = Int64(totalQuestion / 10)
+        user.userLevel = Int64(totalQuestion / 100)
         rankLabel.text = "\(user.userLevel) 급"
         
         user.userEXP = Int64(expPercentage * 100)
