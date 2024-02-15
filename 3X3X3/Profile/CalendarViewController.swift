@@ -12,7 +12,7 @@ import CoreData
 class CalendarViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     lazy var correctRate: CGFloat = 0.0
     lazy var correctRates: [CGFloat] = []
-    private lazy var totalQuestion: Int = 0
+    lazy var totalQuestion: Int = 0
 
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
@@ -28,15 +28,7 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         collectionView.layer.cornerRadius = 15
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 90
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CalendarCell
-        guard let context = persistentContainer?.viewContext else {return cell}
+        guard let context = persistentContainer?.viewContext else {return}
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
         do {
@@ -49,19 +41,29 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
                 
                 correctRate = CGFloat(correctWordCount) / CGFloat(totalQuestion)
                 correctRates.append(correctRate)
+                print(correctRates)
             }
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
+        collectionView.reloadData()
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 90
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CalendarCell
         
         cell.textLabel.text = "\(indexPath.item + 1)"
         
-        if correctRates.count - 1 >= indexPath.item && correctRates[indexPath.item] >= 0.6 {
-            cell.backgroundColor = .check
-            cell.textLabel.text = "✔️"
-        } else {
-            cell.backgroundColor = .team332
-        }
+        if correctRates.indices.contains(indexPath.item), correctRates[indexPath.item] >= 0.6 {
+                    cell.backgroundColor = .check
+                    cell.textLabel.text = "✔️"
+                } else {
+                    cell.backgroundColor = .team332
+                }
         
         return cell
     }

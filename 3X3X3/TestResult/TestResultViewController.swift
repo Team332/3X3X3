@@ -19,6 +19,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
 
     var totalQuestion: Int = 0
     var correctRate: CGFloat = 0.0
+    var correctRates: [CGFloat] = []
     var incorrectWords: [NSManagedObject] = []
 
 // MARK: - Lifecycle
@@ -31,22 +32,22 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         createCircle()
         setupUI()
         setupConstraint()
-        sendData()
+//        sendData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        sendData()
+//        sendData()
     }
     
 
 // MARK: - Data Setup
-    private func sendData() {
-        if let profileViewController = navigationController?.viewControllers.first(where: { $0 is ProfileViewController }) as? ProfileViewController {
-            profileViewController.correctRate = correctRate
-        }
-
-    }
+//    private func sendData() {
+//        if let profileViewController = navigationController?.viewControllers.first(where: { $0 is ProfileViewController }) as? ProfileViewController {
+//            profileViewController.correctRate = correctRate
+//        }
+//
+//    }
 
     private func setupData() {
         setupIncorrectWord()
@@ -96,6 +97,8 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
                 let correctWordCount = totalQuestion - incorrectWordCount
 
                 correctRate = CGFloat(correctWordCount) / CGFloat(totalQuestion)
+                correctRates.append(correctRate)
+                print(correctRates)
             }
         } catch let error as NSError {
             print("불러올 수 없습니다. \(error), \(error.userInfo)")

@@ -11,11 +11,8 @@ import CoreData
 
 class ProfileViewController: UIViewController {
     private lazy var totalQuestion: Int = 0
-    
-
     var correctRate: CGFloat = 0.0
-
-
+    var correctRates: [CGFloat] = []
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
@@ -70,7 +67,7 @@ class ProfileViewController: UIViewController {
         
         user.totalWords = Int64(totalQuestion)
         totalWordsLabel.text = "\(user.totalWords) 개"
-        print(correctRate)
+//        print(correctRate)
         
         user.userLevel = Int64(totalQuestion / 10)
         rankLabel.text = "\(user.userLevel) 급"
@@ -87,7 +84,7 @@ class ProfileViewController: UIViewController {
     private lazy var samStack: UIStackView = {
         let samStack = UIStackView()
         samStack.axis = .vertical
-        samStack.spacing = 40
+        samStack.spacing = 35
         return samStack
     }()
     
@@ -97,6 +94,8 @@ class ProfileViewController: UIViewController {
         samsamImage.contentMode = .scaleAspectFit
         guard let image = UIImage(named: "332") else { return UIImageView() }
         samsamImage.image = image
+        samsamImage.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        samsamImage.heightAnchor.constraint(equalToConstant: 150).isActive = true
         return samsamImage
     }()
     
@@ -145,7 +144,7 @@ class ProfileViewController: UIViewController {
     
     private lazy var averageLabel: UILabel = {
         let averageLabel = UILabel()
-        averageLabel.text = "평균점수 :"
+        averageLabel.text = "현재점수 :"
         averageLabel.font = UIFont.boldSystemFont(ofSize: 17)
         return averageLabel
     }()
