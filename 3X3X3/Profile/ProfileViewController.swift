@@ -144,7 +144,7 @@ class ProfileViewController: UIViewController {
     
     private lazy var averageLabel: UILabel = {
         let averageLabel = UILabel()
-        averageLabel.text = "평균점수 :"
+        averageLabel.text = "현재점수 :"
         averageLabel.font = UIFont.boldSystemFont(ofSize: 17)
         return averageLabel
     }()
