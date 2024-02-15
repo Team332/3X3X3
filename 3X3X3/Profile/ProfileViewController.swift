@@ -4,7 +4,8 @@
 //
 //  Created by 영현 on 2/5/24.
 //
-
+// 코어데이터에 isCorrect를 포함한 테스트결과를 잘 포함하고 있는지, 마지막 값만 덮어씌워져서 기억하고 있지 않은지(이러면 안됌)
+// append가 테스트결과만큼 되고 있나 코어데이터에도 테스트결과만큼 데이터가 저장되어 있어야 한다.
 import UIKit
 import SnapKit
 import CoreData
@@ -13,6 +14,7 @@ class ProfileViewController: UIViewController {
     private lazy var totalQuestion: Int = 0
 
     var correctRate: CGFloat = 0.0
+
     var correctRates: [CGFloat] = []
 
     var persistentContainer: NSPersistentContainer? {
