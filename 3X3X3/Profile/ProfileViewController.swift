@@ -11,20 +11,22 @@ import CoreData
 
 class ProfileViewController: UIViewController {
     private lazy var totalQuestion: Int = 0
+
     var correctRate: CGFloat = 0.0
     var correctRates: [CGFloat] = []
+
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         updateExperience()
-
+        
         setUi()
-
+        
         let calendarVC = CalendarViewController(collectionViewLayout: UICollectionViewFlowLayout())
         addChild(calendarVC)
         view.addSubview(calendarVC.view)
@@ -61,7 +63,7 @@ class ProfileViewController: UIViewController {
         }
         
         lazy var user = User(context: context)
-                
+        
         lazy var expPercentage = min(Double(totalQuestion % 100) / 100.0, 1.0)
         expBar.setProgress(Float(expPercentage), animated: true)
         
@@ -78,7 +80,7 @@ class ProfileViewController: UIViewController {
         
         user.averageScore = correctRate * 100
         averageScoreLabel.text = String(format: "%.1f점", user.averageScore)
-
+        
     }
     
     private lazy var samStack: UIStackView = {

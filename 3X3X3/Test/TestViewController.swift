@@ -83,7 +83,7 @@ class TestViewController: UIViewController {
         setStackView()
         addViews()
         setConstraint()
-    
+        
         if let name = SharedData.shared.enteredCategory {
             getListByName(name: name)
         }
@@ -93,7 +93,7 @@ class TestViewController: UIViewController {
         super.viewWillAppear(animated)
         if vocaList.isEmpty {
             let cantAccessAlert = UIAlertController(title: "시험 볼 단어가 없어요!", message: "이미 모든 단어를 다 알고 있어요!\n 처음 화면으로 이동할게요!", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "확인", style: .default) {_ in
+            let okAction: UIAlertAction = UIAlertAction(title: "확인", style: .default) { action in
                 self.navigationController?.popToRootViewController(animated: true)
             }
             cantAccessAlert.addAction(okAction)
@@ -110,9 +110,9 @@ class TestViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        
         vocaList = []
-
+        
         print(#function)
     }
     
@@ -178,15 +178,12 @@ class TestViewController: UIViewController {
     }
     
     func fetchWords(for vocabularyList: VocabularyList) -> [Word]? {
-        // VocabularyList에 연결된 Word들을 가져오기 위한 fetchRequest 생성
+        
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
-        // VocabularyList와의 관계를 통해 Word를 필터링
         fetchRequest.predicate = NSPredicate(format: "vocabularyList == %@ AND isCorrect == false", vocabularyList)
         
         do {
-            // CoreData에서 Word들을 가져옴
             let words = try persistentContainer?.viewContext.fetch(fetchRequest)
-            // 가져온 Word들을 반환
             return words
         } catch {
             print("Error fetching words: \(error)")
@@ -207,14 +204,14 @@ class TestViewController: UIViewController {
     
     //MARK: Button Actions
     @objc func submit() {
-
-        for i in 0..<vocaList.count {
-                    if wordLabel.text == vocaList[i].word {
-                        // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
-                        vocaList[i].isCorrect = (meaningTextField.text == vocaList[i].meaning) ? true : false
         
-                        print(vocaList[i].isCorrect)
-
+        for i in 0..<vocaList.count {
+            if wordLabel.text == vocaList[i].word {
+                // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
+                vocaList[i].isCorrect = (meaningTextField.text == vocaList[i].meaning) ? true : false
+                
+                print(vocaList[i].isCorrect)
+                
                 if i == vocaList.count - 1 {
                     let finishAlert = UIAlertController(title: "마지막 단어입니다! 제출하고 시험 결과로 넘어가시겠습니까?", message: nil, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "제출", style: .default, handler: { action in
@@ -234,7 +231,7 @@ class TestViewController: UIViewController {
     }
     
     func printNextWord() {
-
+        
         for i in 0..<vocaList.count {
             if vocaList[i].word == wordLabel.text {
                 wordLabel.text = vocaList[i + 1].word
@@ -257,7 +254,7 @@ class TestViewController: UIViewController {
     
     func applyChangesToCoreData() {
         let list = vocaList
-
+        
         guard let context = persistentContainer?.viewContext else { return }
         
         for thing in list {
@@ -294,10 +291,4 @@ extension UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-}
-
-struct WordCard {
-    var word: String
-    var meaning: String
-    var isCorrect: Bool
 }

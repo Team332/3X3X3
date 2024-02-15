@@ -8,47 +8,10 @@
 import UIKit
 import SnapKit
 
-//#Preview{
-//    FinishedViewController()
-//}
-
-
 
 class FinishedViewController: UIViewController {
-
-    // 시험 준비 완료 버튼이 클릭되었을 때 실행되는 함수
-    @objc func readyForTestButtonTapped() {
-        let testViewController = TestViewController()
-        
-        // navigationController가 있을 경우 push를 사용하여 뷰 컨트롤러 전환
-        navigationController?.pushViewController(testViewController, animated: true)
-        // 모달 전환 시 트랜지션 스타일을 .fullScreen으로 설정
-        //testViewController.modalPresentationStyle = .fullScreen
-        // 모달 전환 시 슬라이딩 애니메이션 비활성화
-        //testViewController.modalTransitionStyle = .crossDissolve
-        // navigationController가 없을 경우 present를 사용하여 모달로 뷰 컨트롤러 전환
-//        present(testViewController, animated: true, completion: nil)
-    }
     
-    // 더 공부하기 버튼이 클릭되었을 때 실행되는 함수
-    @objc func backToStudyButtonTapped() {
-        // 네비게이션 컨트롤러가 존재하는지 확인
-        guard let navigationController = navigationController else {
-            // 네비게이션 컨트롤러가 존재하지 않는다면, 모달로 VocaListViewController를 표시하고 현재 뷰 컨트롤러를 닫음
-            let vocaListVC = VocaListViewController()
-            present(vocaListVC, animated: true, completion: nil)
-            return
-        }
-        
-        // 네비게이션 스택에 루트 뷰 컨트롤러가 있는지 확인
-        guard let rootViewController = navigationController.viewControllers.first else {
-            // 루트 뷰 컨트롤러가 존재하지 않는다면, 아무 작업도 수행하지 않고 함수 종료
-            return
-        }
-        
-        // 루트 뷰 컨트롤러로 이동
-        navigationController.popToViewController(rootViewController, animated: true)
-    }
+    let listName = SharedData.shared.enteredCategory
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +21,7 @@ class FinishedViewController: UIViewController {
         
         // '단어장 이름' 라벨
         let titleLabel = UILabel()
-        titleLabel.text = "단어장 이름"
+        titleLabel.text = listName
         titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
         titleLabel.textAlignment = .center
         
@@ -114,7 +77,7 @@ class FinishedViewController: UIViewController {
         // 작은 삼삼이 그림
         let samsamImageView = UIImageView()
         samsamImageView.image = UIImage(named: "small33")
-                
+        
         // 뷰에 서브뷰로 추가
         view.addSubview(titleLabel)
         view.addSubview(bigSamsamImageView)
@@ -139,7 +102,7 @@ class FinishedViewController: UIViewController {
             make.right.equalToSuperview().offset(-25)
             make.height.equalTo(250)
         }
- 
+        
         buttonStackView.snp.makeConstraints { make in
             make.top.equalTo(samsamTalkinglabel.snp.bottom).offset(40)
             make.left.equalToSuperview().offset(30)
@@ -152,5 +115,39 @@ class FinishedViewController: UIViewController {
             make.right.equalToSuperview().offset(-15)
             make.height.equalTo(100)
         }
+    }
+    
+    // 시험 준비 완료 버튼이 클릭되었을 때 실행되는 함수
+    @objc func readyForTestButtonTapped() {
+        let testViewController = TestViewController()
+        
+        // navigationController가 있을 경우 push를 사용하여 뷰 컨트롤러 전환
+        navigationController?.pushViewController(testViewController, animated: true)
+        // 모달 전환 시 트랜지션 스타일을 .fullScreen으로 설정
+        //testViewController.modalPresentationStyle = .fullScreen
+        // 모달 전환 시 슬라이딩 애니메이션 비활성화
+        //testViewController.modalTransitionStyle = .crossDissolve
+        // navigationController가 없을 경우 present를 사용하여 모달로 뷰 컨트롤러 전환
+        //        present(testViewController, animated: true, completion: nil)
+    }
+    
+    // 더 공부하기 버튼이 클릭되었을 때 실행되는 함수
+    @objc func backToStudyButtonTapped() {
+        // 네비게이션 컨트롤러가 존재하는지 확인
+        guard let navigationController = navigationController else {
+            // 네비게이션 컨트롤러가 존재하지 않는다면, 모달로 VocaListViewController를 표시하고 현재 뷰 컨트롤러를 닫음
+            let vocaListVC = VocaListViewController()
+            present(vocaListVC, animated: true, completion: nil)
+            return
+        }
+        
+        // 네비게이션 스택에 루트 뷰 컨트롤러가 있는지 확인
+        guard let rootViewController = navigationController.viewControllers.first else {
+            // 루트 뷰 컨트롤러가 존재하지 않는다면, 아무 작업도 수행하지 않고 함수 종료
+            return
+        }
+        
+        // 루트 뷰 컨트롤러로 이동
+        navigationController.popToViewController(rootViewController, animated: true)
     }
 }
