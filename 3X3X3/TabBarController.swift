@@ -40,6 +40,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, UINaviga
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
+
             appearance.backgroundColor = .team332
 
             self.tabBar.standardAppearance = appearance
@@ -48,6 +49,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, UINaviga
         }
         self.tabBar.tintColor = .systemPurple.withAlphaComponent(0.8)
     }
+
 
 
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
@@ -74,6 +76,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, UINaviga
         UIView.transition(from: fromView, to: toView, duration: 0.3, options: selectedAnimationOption) { _ in
         }
         
+
         return true
     }
 }
