@@ -15,23 +15,7 @@ class SharedData {
     
     static let shared = SharedData()
     
-//    var enteredCategoryEntity: VocabularyList?
-    var enteredCategory: String? 
-//    {
-//        didSet {
-//            if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext, let name = enteredCategory {
-//                let fetchRequest: NSFetchRequest<VocabularyList> = VocabularyList.fetchRequest()
-//                fetchRequest.predicate = NSPredicate(format: "name = %@", name)
-//                
-//                do {
-//                    let lists = try context.fetch(fetchRequest)
-//                    if let list = lists.first {
-//                        enteredCategoryEntity = list
-//                    }
-//                } catch { print("Error = \(error)") }
-//            }
-//        }
-//    }
+    var enteredCategory: String?
 }
 
 class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
@@ -132,8 +116,8 @@ class VocaListViewController: UIViewController, VocaListCollectionCellDelegate {
             guard let category = alert.textFields?.first?.text, !category.isEmpty
             else { return }
             
-//            SharedData.shared.enteredCategory = category
-
+            //            SharedData.shared.enteredCategory = category
+            
             // 단어장 이름 저장
             CoreDataManager.shared.createVocaCategory(name: category)
             self.categoryDataSource = CoreDataManager.shared.readVocaCategory()

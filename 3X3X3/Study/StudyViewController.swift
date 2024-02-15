@@ -10,10 +10,6 @@ import SnapKit
 import CoreData
 
 
-//#Preview{
-//    StudyViewController()
-//}
-
 class StudyViewController: UIViewController {
     
     var persistentContainer = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
@@ -145,7 +141,7 @@ class StudyViewController: UIViewController {
             present(alertController, animated: true, completion: nil)
         }
     }
-
+    
     
     func setViews() {
         // 뷰에 서브뷰로 추가
@@ -274,7 +270,7 @@ class StudyViewController: UIViewController {
             // 현재 단어가 없으면 처리하지 않음
             return
         }
-
+        
         // Core Data에서 현재 단어의 관련 객체 가져오기
         guard let context = persistentContainer?.viewContext else {
             return
@@ -300,10 +296,10 @@ class StudyViewController: UIViewController {
         } catch {
             print("Error saving context: \(error)")
         }
-
+        
         // vocaList에서 현재 단어를 제거
         vocaList.removeFirst()
-
+        
         // 다음 단어가 있으면 보여줌
         if let nextWord = vocaList.first {
             label1.text = nextWord.word
@@ -316,7 +312,7 @@ class StudyViewController: UIViewController {
             navigationController?.pushViewController(finishedVC, animated: true)
         }
     }
-
+    
     
     // IDK 버튼 액션
     @objc func idkButtonTapped() {
