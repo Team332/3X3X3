@@ -10,9 +10,9 @@ import UIKit
 import CoreData
 
 class CalendarViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    lazy var correctRate: CGFloat = 0.0
-    lazy var correctRates: [CGFloat] = []
-    lazy var totalQuestion: Int = 0
+    var correctRate: CGFloat = 0.0
+    var correctRates: [CGFloat] = []
+    var totalQuestion: Int = 0
 
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
@@ -28,6 +28,20 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         collectionView.layer.cornerRadius = 15
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let savedCorrectRate = UserDefaults.standard.value(forKey: "CorrectRate") as? CGFloat {
+                    correctRate = savedCorrectRate
+                }
+        if let savedCorrectRates = UserDefaults.standard.array(forKey: "CorrectRates") as? [CGFloat] {
+                correctRates = savedCorrectRates
+            }
+        updateRate()
+    }
+    
+    func updateRate(){
         guard let context = persistentContainer?.viewContext else {return}
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
@@ -46,6 +60,8 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
+        UserDefaults.standard.set(correctRates, forKey: "CorrectRates")
+
         collectionView.reloadData()
     }
     
@@ -58,7 +74,7 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         
         cell.textLabel.text = "\(indexPath.item + 1)"
         
-        if correctRates.indices.contains(indexPath.item), correctRates[indexPath.item] >= 0.6 {
+        if correctRates.count - 1 >= indexPath.item, correctRates[indexPath.item] >= 0.6 {
                     cell.backgroundColor = .check
                     cell.textLabel.text = "✔️"
                 } else {

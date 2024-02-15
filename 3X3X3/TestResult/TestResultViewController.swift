@@ -37,7 +37,8 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        sendData()
+
+        //        sendData()
     }
     
 
@@ -52,8 +53,13 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
     private func setupData() {
         setupIncorrectWord()
         calculateCorrectRate()
+        saveCorrectRateToUserDefaults()
     }
-
+    private func saveCorrectRateToUserDefaults() {
+        let defaults = UserDefaults.standard
+        defaults.set(correctRate, forKey: "CorrectRate")
+    }
+    
     private func createWord(entity: NSEntityDescription, word: String, meaning: String, isCorrect: Bool, context: NSManagedObjectContext) -> NSManagedObject {
         let wordObject = NSManagedObject(entity: entity, insertInto: context)
         wordObject.setValue(word, forKey: "word")
