@@ -32,24 +32,9 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         createCircle()
         setupUI()
         setupConstraint()
-//        sendData()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        //        sendData()
-    }
-    
-
 
 // MARK: - Data Setup
-//    private func sendData() {
-//        if let profileViewController = navigationController?.viewControllers.first(where: { $0 is ProfileViewController }) as? ProfileViewController {
-//            profileViewController.correctRate = correctRate
-//        }
-//
-//    }
 
     private func setupData() {
         setupIncorrectWord()
