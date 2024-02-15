@@ -12,12 +12,15 @@ import CoreData
 class ProfileViewController: UIViewController {
     private lazy var totalQuestion: Int = 0
     
+
     var correctRate: CGFloat = 0.0
+
 
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -78,6 +81,7 @@ class ProfileViewController: UIViewController {
         
         user.averageScore = correctRate * 100
         averageScoreLabel.text = String(format: "%.1f점", user.averageScore)
+
     }
     
     private lazy var samStack: UIStackView = {

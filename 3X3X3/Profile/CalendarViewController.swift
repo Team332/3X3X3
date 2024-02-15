@@ -19,6 +19,7 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
     }
     private let reuseIdentifier = "Cell"
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,6 +29,8 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
 
+        
+        correctRates.append(correctRate)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

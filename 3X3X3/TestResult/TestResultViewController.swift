@@ -38,6 +38,11 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         super.viewWillAppear(animated)
         sendData()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        sendData()
+    }
 
 // MARK: - Data Setup
     private func sendData() {
