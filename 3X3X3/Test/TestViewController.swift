@@ -6,12 +6,6 @@
 //
 
 
-// 해야되는 것
-// 1. VocabularyList 안에 Word 로 접근하는 방법 알아내기
-// 2. 데이터들 싹다 코어데이터로 옮겨버리기 (user, vobularyList, totalVocabularyList 싸그리 다)
-// 3. 단어 문제 하나 풀 때 마다 15초 기준으로 시계 똑딱똑딱하기
-// 4. TestResultViewController.completionHandler 만들어서 list name 넘겨주기
-
 import UIKit
 import SnapKit
 import CoreData
@@ -95,7 +89,17 @@ class TestViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.wordLabel.text = vocaList[0].word
+        if vocaList.isEmpty {
+            let cantAccessAlert = UIAlertController(title: "시험 볼 단어가 없어요!", message: "이미 모든 단어를 다 알고 있어요!\n 처음 화면으로 이동할게요!", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "확인", style: .default) {_ in
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+            cantAccessAlert.addAction(okAction)
+            present(cantAccessAlert, animated: true)
+        } else {
+            self.wordLabel.text = vocaList[0].word
+        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -104,6 +108,7 @@ class TestViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        vocaList = []
         print(#function)
     }
     
@@ -189,6 +194,7 @@ class TestViewController: UIViewController {
         if let words = fetchWords(for: vocabularyList) {
             for word in words {
                 self.vocaList.append(WordCard(word: String(word.word ?? ""), meaning: String(word.meaning ?? ""), isCorrect: word.isCorrect))
+                
                 print("Name: \(word.word), Definition: \(word.meaning)")
             }
         }
@@ -197,28 +203,18 @@ class TestViewController: UIViewController {
     
     //MARK: Button Actions
     @objc func submit() {
-//        var wordList = vocaList
-//        for i in 0..<wordList.count {
-//            if wordLabel.text == wordList[i].word {
-//                // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
-//                wordList[i].isCorrect = (meaningTextField.text == wordList[i].meaning) ? true : false
-//                
-//                print(wordList[i].isCorrect)
-//                self.copiedList = wordList // 여기서 self.copiedList값 갱신
-        
         for i in 0..<vocaList.count {
                     if wordLabel.text == vocaList[i].word {
                         // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
                         vocaList[i].isCorrect = (meaningTextField.text == vocaList[i].meaning) ? true : false
         
                         print(vocaList[i].isCorrect)
-        
+                        
                 if i == vocaList.count - 1 {
                     let finishAlert = UIAlertController(title: "마지막 단어입니다! 제출하고 시험 결과로 넘어가시겠습니까?", message: nil, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "제출", style: .default, handler: { action in
                         self.applyChangesToCoreData()
                         self.navigationController?.pushViewController(TestResultViewController(), animated: true)
-                        return// 시험 결과 뷰로 넘어가는 코드
                     })
                     let denyAction = UIAlertAction(title: "취소", style: .cancel)
                     finishAlert.addAction(okAction)
@@ -233,15 +229,6 @@ class TestViewController: UIViewController {
     }
     
     func printNextWord() {
-//        var wordList = vocaList
-//        for i in 0..<wordList.count {
-//            if wordList[i].word == wordLabel.text {
-//                wordLabel.text = wordList[i + 1].word
-//                meaningTextField.text = ""
-//                return
-//            }
-//        }
-        
         for i in 0..<vocaList.count {
             if vocaList[i].word == wordLabel.text {
                 wordLabel.text = vocaList[i + 1].word
@@ -264,9 +251,8 @@ class TestViewController: UIViewController {
     
     func applyChangesToCoreData() {
         let list = vocaList
-//        guard let list = vocaList else { return }
+
         guard let context = persistentContainer?.viewContext else { return }
-        
         
         for thing in list {
             let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
