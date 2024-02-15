@@ -17,6 +17,7 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
     
+    var vocabularyListName: String?
     var totalQuestion: Int = 0
     var correctRate: CGFloat = 0.0
     var correctRates: [CGFloat] = []
@@ -34,62 +35,89 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         setupConstraint()
     }
 
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+
+
 // MARK: - Data Setup
 
     private func setupData() {
         setupIncorrectWord()
+
+        fetchVocabularyList()
+
         calculateCorrectRate()
         saveCorrectRateToUserDefaults()
+    }
+
+    private func fetchVocabularyList() {
+        guard let context = persistentContainer?.viewContext else {
+            return
+        }
+
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "VocabularyList")
+
+        do {
+            if let result = try context.fetch(fetchRequest) as? [NSManagedObject] {
+
+            }
+        } catch let error as NSError {
+            print("Could not fetch VocabularyList. \(error), \(error.userInfo)")
+        }
     }
 
     private func saveCorrectRateToUserDefaults() {
         let defaults = UserDefaults.standard
         defaults.set(correctRate, forKey: "CorrectRate")
     }
+    
+//    private func createWord(entity: NSEntityDescription, word: String, meaning: String, isCorrect: Bool, context: NSManagedObjectContext) -> NSManagedObject {
+//        let wordObject = NSManagedObject(entity: entity, insertInto: context)
+//        wordObject.setValue(word, forKey: "word")
+//        wordObject.setValue(meaning, forKey: "meaning")
+//        wordObject.setValue(isCorrect, forKey: "isCorrect")
+//        
+//        return wordObject
+//    }
 
-    
-    private func createWord(entity: NSEntityDescription, word: String, meaning: String, isCorrect: Bool, context: NSManagedObjectContext) -> NSManagedObject {
-        let wordObject = NSManagedObject(entity: entity, insertInto: context)
-        wordObject.setValue(word, forKey: "word")
-        wordObject.setValue(meaning, forKey: "meaning")
-        wordObject.setValue(isCorrect, forKey: "isCorrect")
-        
-        return wordObject
-    }
-    
     // 틀린 단어 필터링(collectionView)
     private func setupIncorrectWord() {
         guard let context = persistentContainer?.viewContext else {
             return
         }
-        
+
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
-        fetchRequest.predicate = NSPredicate(format: "isCorrect == %@", NSNumber(value: false))
-        
+        fetchRequest.predicate = NSPredicate(format: "vocabularyList.name == %@ AND isCorrect == false", vocabularyListName ?? "")
+
         do {
             if let result = try context.fetch(fetchRequest) as? [NSManagedObject] {
                 incorrectWords = result
+                collectionView.reloadData()
             }
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
-    
+
+
     // 정답률 계산
     private func calculateCorrectRate() {
         guard let context = persistentContainer?.viewContext else {
             return
         }
-        
+
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
-        
+        fetchRequest.predicate = NSPredicate(format: "vocabularyList.name == %@", vocabularyListName ?? "")
+
         do {
             if let result = try context.fetch(fetchRequest) as? [NSManagedObject] {
                 totalQuestion = result.count
-                
+
                 let incorrectWordCount = result.filter { !($0.value(forKey: "isCorrect") as? Bool ?? true) }.count
                 let correctWordCount = totalQuestion - incorrectWordCount
-                
+
                 correctRate = CGFloat(correctWordCount) / CGFloat(totalQuestion)
                 correctRates.append(correctRate)
                 print(correctRates)
@@ -98,7 +126,8 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
             print("불러올 수 없습니다. \(error), \(error.userInfo)")
         }
     }
-    
+
+
     
     // MARK: - Circle
     

@@ -216,7 +216,10 @@ class TestViewController: UIViewController {
                     let finishAlert = UIAlertController(title: "마지막 단어입니다! 제출하고 시험 결과로 넘어가시겠습니까?", message: nil, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "제출", style: .default, handler: { action in
                         self.applyChangesToCoreData()
-                        self.navigationController?.pushViewController(TestResultViewController(), animated: true)
+
+                        let resultVC = TestResultViewController()
+                        resultVC.vocabularyListName = SharedData.shared.enteredCategory
+                        self.navigationController?.pushViewController(resultVC, animated: true)
                     })
                     let denyAction = UIAlertAction(title: "취소", style: .cancel)
                     finishAlert.addAction(okAction)
