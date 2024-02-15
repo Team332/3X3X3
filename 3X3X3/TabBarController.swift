@@ -40,7 +40,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, UINaviga
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .white
+
+            appearance.backgroundColor = .team332
 
             self.tabBar.standardAppearance = appearance
             //self.tabBar.scrollEdgeAppearance = .none
@@ -49,17 +50,33 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, UINaviga
         self.tabBar.tintColor = .systemPurple.withAlphaComponent(0.8)
     }
 
-    // MARK: - UINavigationControllerDelegate
+
 
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        // 해당 탭을 선택할 때마다 애니메이션 적용
-        if viewController is ProfileViewController {
-            let transition = CATransition()
-            transition.duration = 0.5
-            transition.type = CATransitionType(rawValue: "pageCurl")
-            transition.subtype = CATransitionSubtype.fromBottom
-            self.view.layer.add(transition, forKey: kCATransition)
+        
+        guard let fromView = selectedViewController?.view, let toView = viewController.view else {
+            return false
         }
+        
+        guard let fromIndex = tabBarController.viewControllers?.firstIndex(of: selectedViewController!),
+              let toIndex = tabBarController.viewControllers?.firstIndex(of: viewController) else {
+            return false
+        }
+        if fromIndex == toIndex {
+                return false
+            }
+        var selectedAnimationOption: UIView.AnimationOptions = .transitionCurlUp
+        
+        if fromIndex < toIndex {
+            selectedAnimationOption = .transitionCurlUp
+        } else {
+            selectedAnimationOption = .transitionCurlDown
+        }
+        
+        UIView.transition(from: fromView, to: toView, duration: 0.3, options: selectedAnimationOption) { _ in
+        }
+        
+
         return true
     }
 }

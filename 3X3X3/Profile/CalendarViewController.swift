@@ -7,19 +7,19 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class CalendarViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
-    private let reuseIdentifier = "Cell"
-    var correctRates: [CGFloat] {
-        if let cor = UserDefaults.standard.object(forKey: "CorrectRates") {
-            return cor as! [CGFloat]
-        } else {
-            return [0]
-        }
-//        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
+    lazy var correctRate: CGFloat = 0.0
+    lazy var correctRates: [CGFloat] = []
+    private lazy var totalQuestion: Int = 0
+
+    var persistentContainer: NSPersistentContainer? {
+        (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
-    
+    private let reuseIdentifier = "Cell"
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,11 +36,26 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CalendarCell
+        guard let context = persistentContainer?.viewContext else {return cell}
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
+        do {
+            if let result = try context.fetch(fetchRequest) as? [NSManagedObject] {
+                
+                let wordsCount = try context.count(for: fetchRequest)
+                totalQuestion = wordsCount
+                let incorrectWordCount = result.filter { !($0.value(forKey: "isCorrect") as? Bool ?? true) }.count
+                let correctWordCount = totalQuestion - incorrectWordCount
+                
+                correctRate = CGFloat(correctWordCount) / CGFloat(totalQuestion)
+                correctRates.append(correctRate)
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
         
         cell.textLabel.text = "\(indexPath.item + 1)"
         
-        // 날짜 & 정답률 60
-//        if indexPath.item + 1 == today && correctRate >= 0.6 {
         if correctRates.count - 1 >= indexPath.item && correctRates[indexPath.item] >= 0.6 {
             cell.backgroundColor = .check
             cell.textLabel.text = "✔️"

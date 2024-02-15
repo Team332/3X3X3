@@ -108,7 +108,9 @@ class TestViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         vocaList = []
+
         print(#function)
     }
     
@@ -203,13 +205,14 @@ class TestViewController: UIViewController {
     
     //MARK: Button Actions
     @objc func submit() {
+
         for i in 0..<vocaList.count {
                     if wordLabel.text == vocaList[i].word {
                         // 제출버튼 누르면, 텍스트필드 값이랑 저장된 Meaning 값이랑 비교해서 맞췄으면 true값을 준다.
                         vocaList[i].isCorrect = (meaningTextField.text == vocaList[i].meaning) ? true : false
         
                         print(vocaList[i].isCorrect)
-                        
+
                 if i == vocaList.count - 1 {
                     let finishAlert = UIAlertController(title: "마지막 단어입니다! 제출하고 시험 결과로 넘어가시겠습니까?", message: nil, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "제출", style: .default, handler: { action in
@@ -229,6 +232,7 @@ class TestViewController: UIViewController {
     }
     
     func printNextWord() {
+
         for i in 0..<vocaList.count {
             if vocaList[i].word == wordLabel.text {
                 wordLabel.text = vocaList[i + 1].word

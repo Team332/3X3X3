@@ -10,28 +10,24 @@ import SnapKit
 import CoreData
 
 class ProfileViewController: UIViewController {
-//    let testResultVC = TestResultViewController()
     private lazy var totalQuestion: Int = 0
     
+
+    var correctRate: CGFloat = 0.0
+
+
     var persistentContainer: NSPersistentContainer? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
     
-    private var correctRates: [CGFloat] {
-        if let cor = UserDefaults.standard.object(forKey: "CorrectRates") {
-            return cor as! [CGFloat]
-        } else {
-            return [0]
-        }
-//        UserDefaults.standard.object(forKey: "CorrectRates") as! [CGFloat]
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        updateExperience()
+
         setUi()
-        
-//        updateExperience()
+
         let calendarVC = CalendarViewController(collectionViewLayout: UICollectionViewFlowLayout())
         addChild(calendarVC)
         view.addSubview(calendarVC.view)
@@ -54,33 +50,46 @@ class ProfileViewController: UIViewController {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Word")
         do {
-            let wordsCount = try context.count(for: fetchRequest)
-            totalQuestion = wordsCount
+            if let result = try context.fetch(fetchRequest) as? [NSManagedObject] {
+                
+                let wordsCount = try context.count(for: fetchRequest)
+                totalQuestion = wordsCount
+                let incorrectWordCount = result.filter { !($0.value(forKey: "isCorrect") as? Bool ?? true) }.count
+                let correctWordCount = totalQuestion - incorrectWordCount
+                
+                correctRate = CGFloat(correctWordCount) / CGFloat(totalQuestion)
+            }
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
         
-        lazy var total = User(context: context)
-        
-//        total.totalWords = 332
-        
+        lazy var user = User(context: context)
+                
         lazy var expPercentage = min(Double(totalQuestion % 100) / 100.0, 1.0)
         expBar.setProgress(Float(expPercentage), animated: true)
         
-        totalWordsLabel.text = "\(totalQuestion) 개"
-        print("총 단어 수: \(totalQuestion)")
+        user.totalWords = Int64(totalQuestion)
+        totalWordsLabel.text = "\(user.totalWords) 개"
+        print(correctRate)
         
-        lazy var level = totalQuestion / 100
-        rankLabel.text = "\(level) 등급"
+        user.userLevel = Int64(totalQuestion / 10)
+        rankLabel.text = "\(user.userLevel) 급"
         
-        lazy var percentage = Int(expPercentage * 100)
-        expPercentLabel.text = "\(percentage) / 100"
-        expLabelText.text = "\(percentage)%"
+        user.userEXP = Int64(expPercentage * 100)
+        expPercentLabel.text = "\(user.userEXP) / 100"
+        expLabelText.text = "\(user.userEXP)%"
         
-        lazy var average = correctRates.isEmpty ? 0 : correctRates.reduce(0, +) / CGFloat(correctRates.count)
-        lazy var averageString = Int(average * 100)
-        averageScoreLabel.text = "\(averageString) 점"
+        user.averageScore = correctRate * 100
+        averageScoreLabel.text = String(format: "%.1f점", user.averageScore)
+
     }
+    
+    private lazy var samStack: UIStackView = {
+        let samStack = UIStackView()
+        samStack.axis = .vertical
+        samStack.spacing = 40
+        return samStack
+    }()
     
     private lazy var samsamImage: UIImageView = {
         let samsamImage = UIImageView()
@@ -89,6 +98,18 @@ class ProfileViewController: UIViewController {
         guard let image = UIImage(named: "332") else { return UIImageView() }
         samsamImage.image = image
         return samsamImage
+    }()
+    
+    private lazy var userName: UILabel = {
+        let userName = UILabel()
+        userName.text = "삼사미"
+        userName.font = UIFont.boldSystemFont(ofSize: 22)
+        userName.layer.cornerRadius = 10
+        userName.layoutMargins = UIEdgeInsets(top: 10, left: 40, bottom: 10, right: 40)
+        userName.layer.masksToBounds = true
+        userName.backgroundColor = UIColor.team332.withAlphaComponent(0.8)
+        userName.textAlignment = .center
+        return userName
     }()
     
     private lazy var totalWordsLabel: UILabel = {
@@ -198,9 +219,12 @@ class ProfileViewController: UIViewController {
     }()
     
     func setUi() {
-        view.addSubview(samsamImage)
+        view.addSubview(samStack)
         view.addSubview(scoreLabelStack)
         view.addSubview(expStack)
+        
+        samStack.addArrangedSubview(samsamImage)
+        samStack.addArrangedSubview(userName)
         
         scoreLabelStack.addArrangedSubview(labelStack)
         scoreLabelStack.addArrangedSubview(scoreStack)
@@ -230,8 +254,8 @@ class ProfileViewController: UIViewController {
             make.trailing.equalTo(-15)
         }
         
-        samsamImage.snp.makeConstraints{ make in
-            make.top.equalTo(80)
+        samStack.snp.makeConstraints{ make in
+            make.top.equalTo(90)
             make.right.equalTo(-35)
         }
     }
