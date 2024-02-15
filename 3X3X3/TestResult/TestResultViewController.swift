@@ -289,21 +289,26 @@ class TestResultViewController: UIViewController, UICollectionViewDataSource, UI
         cell.backgroundColor = UIColor.white
         cell.layer.cornerRadius = 15
         
-        // 틀린 단어 표시
-        let wordLabel = UILabel()
-        wordLabel.textAlignment = .center
-        wordLabel.font = UIFont.systemFont(ofSize: 18)
-        cell.contentView.addSubview(wordLabel)
+        // 틀린 단어 표시용 레이블 가져오기
+        let wordLabel: UILabel
+        if let existingLabel = cell.contentView.subviews.first as? UILabel {
+            wordLabel = existingLabel
+        } else {
+            // 셀에 레이블이 없는 경우 새로 생성
+            let newLabel = UILabel()
+            newLabel.textAlignment = .center
+            newLabel.font = UIFont.systemFont(ofSize: 18)
+            cell.contentView.addSubview(newLabel)
+            newLabel.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            wordLabel = newLabel
+        }
         
+        // 잘못된 단어 정보 설정
         let word = incorrectWords[indexPath.item].value(forKey: "word") as? String ?? ""
         let meaning = incorrectWords[indexPath.item].value(forKey: "meaning") as? String ?? ""
-        
-        
         wordLabel.text = "\(word)       \(meaning)"
-        
-        wordLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
         
         return cell
     }
