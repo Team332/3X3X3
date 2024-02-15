@@ -7,48 +7,20 @@
 
 import UIKit
 
-class TabBarController: UITabBarController, UITabBarControllerDelegate {
-    
+class TabBarController: UITabBarController, UITabBarControllerDelegate, UINavigationControllerDelegate {
+
     let vocaListViewController = VocaListViewController()
-    
+
     var mainVC: UINavigationController {
         let naviTab = UINavigationController(rootViewController: vocaListViewController)
-        let naviTabItem = UITabBarItem(title: "Vocabulary", image: UIImage(named: "StudyIcon")?.resized(to: CGSize(width: 20, height: 20)), tag: 0)
+        let naviTabItem = UITabBarItem(title: "단어장", image: UIImage(named: "StudyIcon")?.resized(to: CGSize(width: 28, height: 28)), tag: 0)
         naviTab.tabBarItem = naviTabItem
         return naviTab
     }
-    
-//    var vocaVC: VocaListViewController {
-//        let vocaTab = VocaListViewController()
-//        let vocaTabItem = UITabBarItem(title: "Vocabulary", image: UIImage(named: "BookIcon")?.resized(to: CGSize(width: 20.0, height: 20.0)), tag: 0)
-//        vocaTab.tabBarItem = vocaTabItem
-//        return vocaTab
-//    }
-//    
-//    var studyVC: StudyViewController {
-//        let studyTab = StudyViewController()
-//        let studyTabItem = UITabBarItem(title: "Study", image: UIImage(named: "StudyIcon")?.resized(to: CGSize(width: 20.0, height: 20.0)), tag: 1)
-//        studyTab.tabBarItem = studyTabItem
-//        return studyTab
-//    }
-//    
-//    var testVC: TestViewController {
-//        let testTab = TestViewController()
-//        let testTabItem = UITabBarItem(title: "Test", image: UIImage(named: "TestIcon")?.resized(to: CGSize(width: 20.0, height: 20.0)), tag: 2)
-//        testTab.tabBarItem = testTabItem
-//        return testTab
-//    }
-//    
-//    var testResultVC: TestResultViewController {
-//        let testResultTab = TestResultViewController()
-//        let testResultTabItem = UITabBarItem(title: "TestResult", image: UIImage(named: "TestResultIcon")?.resized(to: CGSize(width: 20.0, height: 20.0)), tag: 3)
-//        testResultTab.tabBarItem = testResultTabItem
-//        return testResultTab
-//    }
-    
+
     var profileVC: ProfileViewController {
         let profileTab =  ProfileViewController()
-        let profileTabItem = UITabBarItem(title: "Profile", image: UIImage(named: "ProfileIcon")?.resized(to: CGSize(width: 20.0, height: 20.0)), tag: 1)
+        let profileTabItem = UITabBarItem(title: "프로필", image: UIImage(named: "ProfileIcon")?.resized(to: CGSize(width: 28, height: 28)), tag: 1)
         profileTab.tabBarItem = profileTabItem
         return profileTab
     }
@@ -57,34 +29,44 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
 
         self.delegate = self
-        // Do any additional setup after loading the view.
+        vocaListViewController.navigationController?.delegate = self
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBar.backgroundColor = .team332
-//        self.viewControllers = [vocaVC, studyVC, testVC, testResultVC, profileVC]
+
         self.viewControllers = [mainVC, profileVC]
+
         if #available(iOS 15.0, *) {
-           let appearance = UITabBarAppearance()
-           appearance.configureWithOpaqueBackground()
-           appearance.backgroundColor = .team332
-           
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .white
+
             self.tabBar.standardAppearance = appearance
-            self.tabBar.scrollEdgeAppearance = .none
+            //self.tabBar.scrollEdgeAppearance = .none
+            self.tabBar.scrollEdgeAppearance = appearance
         }
+        self.tabBar.tintColor = .systemPurple.withAlphaComponent(0.8)
     }
+
     
     /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
+    // MARK: - UINavigationControllerDelegate
+
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        // 해당 탭을 선택할 때마다 애니메이션 적용
+        if viewController is ProfileViewController {
+            let transition = CATransition()
+            transition.duration = 0.5
+            transition.type = CATransitionType(rawValue: "pageCurl")
+            transition.subtype = CATransitionSubtype.fromBottom
+            self.view.layer.add(transition, forKey: kCATransition)
+        }
+        return true
+    }
 }
 
 //MARK: Resize Image Object
