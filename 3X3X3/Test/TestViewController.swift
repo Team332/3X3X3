@@ -56,6 +56,8 @@ class TestViewController: UIViewController {
         field.borderStyle = .roundedRect
         field.backgroundColor = .light332
         field.textAlignment = .center
+        field.autocorrectionType = .no
+        field.spellCheckingType = .no
         return field
     }()
     
