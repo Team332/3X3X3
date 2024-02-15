@@ -68,7 +68,7 @@ class CoreDataManager {
                 }
             } catch { print("Error = \(error)") }
         }
-
+        
         object.setValue(list, forKey: "vocabularyList")
         
         try? context.save()
