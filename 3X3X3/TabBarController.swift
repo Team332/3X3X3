@@ -40,7 +40,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, UINaviga
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .white
+            appearance.backgroundColor = .team332
 
             self.tabBar.standardAppearance = appearance
             //self.tabBar.scrollEdgeAppearance = .none
@@ -74,24 +74,6 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, UINaviga
         UIView.transition(from: fromView, to: toView, duration: 0.3, options: selectedAnimationOption) { _ in
         }
         
-        return true
-    }
-
-
-    /*
-    // MARK: - Navigation
-
-    // MARK: - UINavigationControllerDelegate
-
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        // 해당 탭을 선택할 때마다 애니메이션 적용
-        if viewController is ProfileViewController {
-            let transition = CATransition()
-            transition.duration = 0.5
-            transition.type = CATransitionType(rawValue: "pageCurl")
-            transition.subtype = CATransitionSubtype.fromBottom
-            self.view.layer.add(transition, forKey: kCATransition)
-        }
         return true
     }
 }

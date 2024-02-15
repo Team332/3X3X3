@@ -28,9 +28,6 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
         collectionView.layer.cornerRadius = 15
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-
-        
-        correctRates.append(correctRate)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -52,8 +49,6 @@ class CalendarViewController: UICollectionViewController, UICollectionViewDelega
                 
                 correctRate = CGFloat(correctWordCount) / CGFloat(totalQuestion)
                 correctRates.append(correctRate)
-                print(correctRates)
-
             }
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
