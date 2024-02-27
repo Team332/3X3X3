@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23C71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="TotalVocabularyList" representedClassName="TotalVocabularyList" syncable="YES" codeGenerationType="class">
+        <relationship name="vocabularyLists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VocabularyList" inverseName="totalVocabularyList" inverseEntity="VocabularyList"/>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
+        <attribute name="averageScore" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="totalWords" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userEXP" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userLevel" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String"/>
+        <relationship name="vocabularyList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="VocabularyList" inverseName="user" inverseEntity="VocabularyList"/>
+        <fetchedProperty name="wrongAnswerList" optional="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="User" predicateString="isCorrect != 0"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="VocabularyList" representedClassName="VocabularyList" syncable="YES" codeGenerationType="class">
+        <attribute name="isCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="totalVocabularyList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TotalVocabularyList" inverseName="vocabularyLists" inverseEntity="TotalVocabularyList"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="vocabularyList" inverseEntity="User"/>
+        <relationship name="words" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Word" inverseName="vocabularyList" inverseEntity="Word"/>
+    </entity>
+    <entity name="Word" representedClassName="Word" syncable="YES" codeGenerationType="class">
+        <attribute name="isCorrect" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="meaning" optional="YES" attributeType="String"/>
+        <attribute name="word" optional="YES" attributeType="String"/>
+        <relationship name="vocabularyList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VocabularyList" inverseName="words" inverseEntity="VocabularyList"/>
+    </entity>
 </model>

@@ -14,10 +14,21 @@
 		14DE56E22B70B2F300A2C6D9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14DE56E02B70B2F300A2C6D9 /* LaunchScreen.storyboard */; };
 		14DE56EF2B70B7B000A2C6D9 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56EE2B70B7B000A2C6D9 /* TabBarController.swift */; };
 		14DE56F22B70B94F00A2C6D9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56F12B70B94F00A2C6D9 /* Model.swift */; };
+		14DE56F42B70D71A00A2C6D9 /* StudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56F32B70D71A00A2C6D9 /* StudyViewController.swift */; };
+		14DE56F62B70D72A00A2C6D9 /* TestResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56F52B70D72A00A2C6D9 /* TestResultViewController.swift */; };
+		14DE56F82B70D73300A2C6D9 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56F72B70D73300A2C6D9 /* TestViewController.swift */; };
+		14DE56FA2B70D73D00A2C6D9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56F92B70D73D00A2C6D9 /* ProfileViewController.swift */; };
+		14DE56FC2B70D74A00A2C6D9 /* VocaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE56FB2B70D74A00A2C6D9 /* VocaListViewController.swift */; };
+		14DE570E2B7B664300A2C6D9 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0009A9D32B725FB8007C85B7 /* CalendarViewController.swift */; };
+		273F57612B7C98CE0048626B /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270D1D172B712B1C0077D5A2 /* FinishedViewController.swift */; };
+		733C783A2B7300AA00362FB4 /* VocaListCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733C78392B7300AA00362FB4 /* VocaListCollectionCell.swift */; };
+		733C783C2B73192200362FB4 /* AddVocaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733C783B2B73192200362FB4 /* AddVocaViewController.swift */; };
+		7353FE932B7865270038EFA3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7353FE922B7865270038EFA3 /* CoreDataManager.swift */; };
 		F802655BC59AA51074A31A49 /* Pods_3X3X3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AE66769F2F731E571CA6EEE /* Pods_3X3X3.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0009A9D32B725FB8007C85B7 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		14DE56CF2B70B2EF00A2C6D9 /* 3X3X3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 3X3X3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14DE56D22B70B2EF00A2C6D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14DE56D42B70B2EF00A2C6D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -27,8 +38,17 @@
 		14DE56E32B70B2F300A2C6D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14DE56EE2B70B7B000A2C6D9 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		14DE56F12B70B94F00A2C6D9 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		14DE56F32B70D71A00A2C6D9 /* StudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewController.swift; sourceTree = "<group>"; };
+		14DE56F52B70D72A00A2C6D9 /* TestResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestResultViewController.swift; sourceTree = "<group>"; };
+		14DE56F72B70D73300A2C6D9 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		14DE56F92B70D73D00A2C6D9 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		14DE56FB2B70D74A00A2C6D9 /* VocaListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocaListViewController.swift; sourceTree = "<group>"; };
 		237794EBA1117AF2F0C073C7 /* Pods-3X3X3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-3X3X3.debug.xcconfig"; path = "Target Support Files/Pods-3X3X3/Pods-3X3X3.debug.xcconfig"; sourceTree = "<group>"; };
+		270D1D172B712B1C0077D5A2 /* FinishedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
 		6AE66769F2F731E571CA6EEE /* Pods_3X3X3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_3X3X3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		733C78392B7300AA00362FB4 /* VocaListCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocaListCollectionCell.swift; sourceTree = "<group>"; };
+		733C783B2B73192200362FB4 /* AddVocaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVocaViewController.swift; sourceTree = "<group>"; };
+		7353FE922B7865270038EFA3 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		E6400E6C7FCCA6C2E78CD224 /* Pods-3X3X3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-3X3X3.release.xcconfig"; path = "Target Support Files/Pods-3X3X3/Pods-3X3X3.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,11 +89,11 @@
 				14DE56D22B70B2EF00A2C6D9 /* AppDelegate.swift */,
 				14DE56D42B70B2EF00A2C6D9 /* SceneDelegate.swift */,
 				14DE56EE2B70B7B000A2C6D9 /* TabBarController.swift */,
-				14DE56ED2B70B62800A2C6D9 /* Study */,
-				14DE56EC2B70B62600A2C6D9 /* TestResult */,
-				14DE56EB2B70B62400A2C6D9 /* Test */,
-				14DE56EA2B70B62200A2C6D9 /* Profile */,
 				14DE56E92B70B62000A2C6D9 /* VocaList */,
+				14DE56ED2B70B62800A2C6D9 /* Study */,
+				14DE56EB2B70B62400A2C6D9 /* Test */,
+				14DE56EC2B70B62600A2C6D9 /* TestResult */,
+				14DE56EA2B70B62200A2C6D9 /* Profile */,
 				14DE56DE2B70B2F300A2C6D9 /* Assets.xcassets */,
 				14DE56E02B70B2F300A2C6D9 /* LaunchScreen.storyboard */,
 				14DE56E32B70B2F300A2C6D9 /* Info.plist */,
@@ -85,6 +105,10 @@
 		14DE56E92B70B62000A2C6D9 /* VocaList */ = {
 			isa = PBXGroup;
 			children = (
+				14DE56FB2B70D74A00A2C6D9 /* VocaListViewController.swift */,
+				733C78392B7300AA00362FB4 /* VocaListCollectionCell.swift */,
+				733C783B2B73192200362FB4 /* AddVocaViewController.swift */,
+				7353FE922B7865270038EFA3 /* CoreDataManager.swift */,
 			);
 			path = VocaList;
 			sourceTree = "<group>";
@@ -92,6 +116,8 @@
 		14DE56EA2B70B62200A2C6D9 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				14DE56F92B70D73D00A2C6D9 /* ProfileViewController.swift */,
+				0009A9D32B725FB8007C85B7 /* CalendarViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -99,6 +125,7 @@
 		14DE56EB2B70B62400A2C6D9 /* Test */ = {
 			isa = PBXGroup;
 			children = (
+				14DE56F72B70D73300A2C6D9 /* TestViewController.swift */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -106,6 +133,7 @@
 		14DE56EC2B70B62600A2C6D9 /* TestResult */ = {
 			isa = PBXGroup;
 			children = (
+				14DE56F52B70D72A00A2C6D9 /* TestResultViewController.swift */,
 			);
 			path = TestResult;
 			sourceTree = "<group>";
@@ -113,6 +141,8 @@
 		14DE56ED2B70B62800A2C6D9 /* Study */ = {
 			isa = PBXGroup;
 			children = (
+				14DE56F32B70D71A00A2C6D9 /* StudyViewController.swift */,
+				270D1D172B712B1C0077D5A2 /* FinishedViewController.swift */,
 			);
 			path = Study;
 			sourceTree = "<group>";
@@ -250,8 +280,18 @@
 			files = (
 				14DE56F22B70B94F00A2C6D9 /* Model.swift in Sources */,
 				14DE56D32B70B2EF00A2C6D9 /* AppDelegate.swift in Sources */,
+				14DE56F82B70D73300A2C6D9 /* TestViewController.swift in Sources */,
+				733C783C2B73192200362FB4 /* AddVocaViewController.swift in Sources */,
 				14DE56EF2B70B7B000A2C6D9 /* TabBarController.swift in Sources */,
+				733C783A2B7300AA00362FB4 /* VocaListCollectionCell.swift in Sources */,
+				14DE56F62B70D72A00A2C6D9 /* TestResultViewController.swift in Sources */,
+				7353FE932B7865270038EFA3 /* CoreDataManager.swift in Sources */,
+				14DE56FC2B70D74A00A2C6D9 /* VocaListViewController.swift in Sources */,
+				273F57612B7C98CE0048626B /* FinishedViewController.swift in Sources */,
 				14DE56D52B70B2EF00A2C6D9 /* SceneDelegate.swift in Sources */,
+				14DE56FA2B70D73D00A2C6D9 /* ProfileViewController.swift in Sources */,
+				14DE56F42B70D71A00A2C6D9 /* StudyViewController.swift in Sources */,
+				14DE570E2B7B664300A2C6D9 /* CalendarViewController.swift in Sources */,
 				14DE56DD2B70B2EF00A2C6D9 /* _X3X3.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,12 +437,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 3X3X3/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -424,12 +466,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 3X3X3/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
